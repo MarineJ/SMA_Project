@@ -27,7 +27,9 @@ namespace SMA_Project_V1
     public WindowMaker()
     {
         this.InitializeComponent();
-
+        this.Size = new Size(800, 600);
+        Disposed += new EventHandler(OgreForm_Disposed);
+        Resize += new EventHandler(OgreForm_Resize);
     }
     protected virtual void CreateCamera(){}
 
@@ -66,7 +68,16 @@ namespace SMA_Project_V1
         }
         base.Dispose(disposing);*/
     }
+    void OgreForm_Resize(object sender, EventArgs e)
+    {
+        mWindow.WindowMovedOrResized();
+    }
 
+    void OgreForm_Disposed(object sender, EventArgs e)
+    {
+        mRoot.Dispose();
+        mRoot = null;
+    }
     public void Go()
     {
         if (this.mRoot == null)
