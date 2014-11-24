@@ -58,8 +58,16 @@
     <Compile Include="BuildingSimulation.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="DefaultInputHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Robot.cs" />
+    <Compile Include="SimulationSetUp.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SimulationSetUp.Designer.cs">
+      <DependentUpon>SimulationSetUp.cs</DependentUpon>
+    </Compile>
     <Compile Include="WindowMaker.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -73,6 +81,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="SimulationSetUp.resx">
+      <DependentUpon>SimulationSetUp.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

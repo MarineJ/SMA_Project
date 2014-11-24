@@ -7,16 +7,18 @@ using System.Windows.Forms;
 
 namespace SMA_Project_V1
 {
-    class WindowMaker : Form
+    public class WindowMaker : Form
     {
 
-        // Fields
+   // Fields
    // private IContainer components;
     private Camera mCamera;
     private Root mRoot;
     private SceneManager mSceneMgr;
     private Viewport mViewport;
     private RenderWindow mWindow;
+    private Overlay mOverlay;
+
 
     // Events
     public event SceneEventHandler SceneCreating;
@@ -25,20 +27,11 @@ namespace SMA_Project_V1
     public WindowMaker()
     {
         this.InitializeComponent();
-     //   base.Icon = Resources.OgreHead;
-    }
 
-    protected virtual void CreateCamera()
-    {
-        this.mCamera = this.mSceneMgr.CreateCamera("MainCamera");
-        this.mCamera.NearClipDistance = 1f;
-        this.mCamera.Position = new Vector3(0f, 0f, 300f);
-        this.mCamera.LookAt(Vector3.ZERO);
     }
+    protected virtual void CreateCamera(){}
 
-    protected virtual void CreateInputHandler()
-    {
-    }
+    protected virtual void CreateInputHandler() { }
 
     protected virtual void CreateRenderWindow(IntPtr handle)
     {
@@ -55,17 +48,16 @@ namespace SMA_Project_V1
         }
     }
 
-    protected virtual void CreateSceneManager()
-    {
-        this.mSceneMgr = this.mRoot.CreateSceneManager(SceneType.ST_GENERIC, "Main SceneManager");
-    }
+    protected virtual void ChooseSceneManager(){}
 
-    protected virtual void CreateViewport()
-    {
-        this.mViewport = this.mWindow.AddViewport(this.mCamera);
-        this.mViewport.BackgroundColour = new ColourValue(0f, 0f, 0f, 1f);
-    }
+    protected virtual void CreateSceneManager(){}
 
+    protected virtual void CreateViewport(){}
+
+    protected virtual void CreateAgents(){}
+
+    protected virtual void CreateOverlay(){}
+        
     protected override void Dispose(bool disposing)
     {
     /*    if (disposing && (this.components != null))
@@ -83,6 +75,7 @@ namespace SMA_Project_V1
         }
         base.Show();
         bool flag = true;
+
         while (flag && (this.mRoot != null))
         {
             flag = this.mRoot.RenderOneFrame();
@@ -110,34 +103,27 @@ namespace SMA_Project_V1
         {
             throw new Exception("Ogre is already initialized!");
         }
-//        Splash splash = new Splash();
-//        splash.Show();
         try
         {
-//            splash.Increment("Creating the root object...");
+
             this.mRoot = new Root();
- //           splash.Increment("Loading resources...");
             this.InitResources();
- //           splash.Increment("Setting up DirectX...");
             this.SetupDirectX();
-  //          splash.Increment("Creating the window...");
             this.CreateRenderWindow(base.Handle);
-  //          splash.Increment("Initializing resources...");
             ResourceGroupManager.Singleton.InitialiseAllResourceGroups();
-   //         splash.Increment("Creating Ogre objects...");
+            this.ChooseSceneManager();
             this.CreateSceneManager();
             this.CreateCamera();
             this.CreateViewport();
-     //       splash.Increment("Creating input handler...");
             this.CreateInputHandler();
-      //      splash.Increment("Creating scene...");
+            this.CreateOverlay();
+            this.CreateAgents();
             base.Disposed += new EventHandler(this.OgreWindow_Disposed);
             this.OnSceneCreating();
         }
         finally
         {
-        //    splash.Close();
-        //    splash.Dispose();
+
         }
     }
 
@@ -185,6 +171,18 @@ namespace SMA_Project_V1
     }
 
     // Properties
+    public Overlay Overlay
+    {
+        get
+        {
+            return this.mOverlay;
+        }
+        protected set
+        {
+            this.mOverlay = value;
+        }
+    }
+
     public Camera Camera
     {
         get
