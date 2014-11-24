@@ -82,8 +82,22 @@ namespace SMA_Project_V1
             node.AttachObject(ent);
             node.Scale(0.1f, 0.1f, 0.1f);
 
+            // SKY
+
+            SceneManager.SetSkyDome(true, "Examples/CloudySky", 5, 8);
+
+            // Fog (brouillard) 
+            ColourValue fadeColour = new ColourValue(0.9f, 0.9f, 0.9f);
+
+            //mWindow.GetViewport(0).BackgroundColour = fadeColour;
+
+            SceneManager.SetFog(FogMode.FOG_EXP, fadeColour, 0.0005f);
+
+
             //Lights
-            Light pointLight = SceneManager.CreateLight("pointLight");
+            SceneManager.AmbientLight = ColourValue.White;
+
+            /*Light pointLight = SceneManager.CreateLight("pointLight");
             pointLight.Type = Light.LightTypes.LT_POINT;
             pointLight.Position = new Vector3(0, 150, 250);
 
@@ -102,7 +116,7 @@ namespace SMA_Project_V1
             spotLight.SpecularColour = ColourValue.Blue;
 
             spotLight.Direction = new Vector3(-1, -1, 0);
-            spotLight.Position = new Vector3(300, 300, 0);
+            spotLight.Position = new Vector3(300, 300, 0);*/
         }
 
         protected override void CreateViewport()
@@ -157,7 +171,7 @@ namespace SMA_Project_V1
         protected override void CreateInputHandler()
         {
 
-            base.CreateInputHandler();
+            new DefaultInputHandler(this);
             this.Root.FrameStarted += new FrameListener.FrameStartedHandler(FrameStarted);
 
 
@@ -172,7 +186,7 @@ namespace SMA_Project_V1
             {
 
                 int tmp = rand.Next(0, TMProbotList.Count);
-                TMProbotList[tmp].animetoi(SceneManager);
+                TMProbotList[tmp].animation("Walk");
                 TMProbotList[tmp].Comportement(evt);
                 TMProbotList.Remove(TMProbotList[tmp]);
             } while (TMProbotList.Count < 0);

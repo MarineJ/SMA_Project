@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using System.Text;
+
 using Mogre;
 
 
@@ -19,21 +21,35 @@ namespace SMA_Project_V1
         String name;
 
         Entity ent;
-        SceneNode node ;
+        SceneNode node;
+        bool bcube = false;
+        Entity cube;
+        SceneNode nodecube;
 
 
-        public Robot(SceneManager SceneManager, string nom, LinkedList<Vector3> walklist, float walkspeed) 
+        public Robot(SceneManager SceneManager, string nom, LinkedList<Vector3> walklist, float walkspeed)
         {
 
             //SceneManager = this.SceneManager;
             // Create the Robot entity
             name = nom;
-            
+            // la forme du robot
             ent = SceneManager.CreateEntity(nom, "robot.mesh");
+            // la forme du cube
+            cube = SceneManager.CreateEntity("cube" + nom, "cube.mesh");
 
-            // Create the Robot's SceneNode
-            node = SceneManager.RootSceneNode.CreateChildSceneNode(nom+"Node",new Vector3(0.0f, 0.0f, 0.25f));
+
+
+            //  Robot SceneNode
+            node = SceneManager.RootSceneNode.CreateChildSceneNode(nom + "Node", new Vector3(0.0f, 0.0f, 0.25f));
+            // le noeud enfant du robot, celui du cube
+            nodecube = node.CreateChildSceneNode(nom + "NodeCube", new Vector3(0.0f, 120.0f, 0.0f));
+
+            // taille du cube
+            nodecube.Scale(0.5f, 0.5f, 0.5f);
+            // on attache les noeuds à leur modèle
             node.AttachObject(ent);
+            nodecube.AttachObject(cube);
 
             //ent = SceneManager.GetEntity(nom);
             //node = SceneManager.GetSceneNode(nom+"Node");
@@ -43,51 +59,58 @@ namespace SMA_Project_V1
             mWalkSpeed = walkspeed;
         }
 
-
-        public void animetoi(SceneManager SceneManager) 
+        // attive une animation en boucle
+        public void animation(string typeAnimation)
         {
-            mAnimationState = SceneManager.GetEntity(name).GetAnimationState("Walk");
+            //Start the walk animation
+            mAnimationState = ent.GetAnimationState(typeAnimation);
             mAnimationState.Loop = true;
             mAnimationState.Enabled = true;
         }
-
+        //passe au suivant
         protected bool nextLocation()
         {
             if (mWalkList.Count == 0)
                 return false;
             return true;
         }
-
-        public bool Comportement(FrameEvent evt) 
+        // le comportement de l'agent lors de la simulation
+        public bool Comportement(FrameEvent evt)
         {
+            // visibilité du cube
+            //cube.Visible = bcube;
+
+            // vitesse de l'agent
             float move = mWalkSpeed * (evt.timeSinceLastFrame);
+            // distance à parcourir
             mDistance -= move;
 
-            //Knot arrival check
+            //distance en ligne droite
             if (mDistance <= 0.0f)
-            {
+            {   // si on est arrivé
                 if (!TurnNextLocation())
                 {
+                    // on attend
                     mAnimationState = ent.GetAnimationState("Idle");
                     return true;
                 }
             }
             else
             {
-                //movement code goes here
+                //l'agent bouge
                 node.Translate(mDirection * move);
             }
 
-            //Update the Animation State.
+            //Passe à la frame d'animation suivante
             mAnimationState.AddTime(evt.timeSinceLastFrame * mWalkSpeed / 20);
 
             return true;
- 
+
         }
 
         bool TurnNextLocation()
         {
-         
+
             if (nextLocation())
             {
                 //Start the walk animation
