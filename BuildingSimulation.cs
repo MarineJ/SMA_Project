@@ -189,7 +189,7 @@ namespace SMA_Project_V1
                 TMProbotList[tmp].animation("Walk");
                 TMProbotList[tmp].Comportement(evt);
                 TMProbotList.Remove(TMProbotList[tmp]);
-            } while (TMProbotList.Count < 0);
+            } while (TMProbotList.Count > 0);
 
             return true;
         }
