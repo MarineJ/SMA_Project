@@ -6,7 +6,7 @@ using Mogre;
 
 namespace SMA_Project_V1
 {
-    abstract class Agent
+    class Agent
     {
         //SceneManager SceneManager;
         private AnimationState mAnimationState = null; //The AnimationState the moving object

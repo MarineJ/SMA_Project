@@ -148,11 +148,11 @@ namespace SMA_Project_V1
 
                 Agent builder = new Agent("robot.mesh",SceneManager, "Robot" + i.ToString(), mWalkList, mWalkSpeed, i, new Builder());
                 robotList.Add(builder);
-                Manager manager = new Manager("ninja.mesh", SceneManager, "Robot" + (i + 1).ToString(), mWalkList, mWalkSpeed, i + 1, new Manager());
+                Agent manager = new Agent("ninja.mesh", SceneManager, "Robot" + (i + 1).ToString(), mWalkList, mWalkSpeed, i + 1, new Manager());
                 robotList.Add(manager);
-                Drag drag = new Drag("robot.mesh", SceneManager, "Robot" + (i + 2).ToString(), mWalkList, mWalkSpeed, i + 2, new Drag());
+                Agent drag = new Agent("robot.mesh", SceneManager, "Robot" + (i + 2).ToString(), mWalkList, mWalkSpeed, i + 2, new Drag());
                 robotList.Add(drag);
-                Idler idler = new Idler("robot.mesh", SceneManager, "Robot" + (i + 3).ToString(), mWalkList, mWalkSpeed, i + 3,new Idler());
+                Agent idler = new Agent("robot.mesh", SceneManager, "Robot" + (i + 3).ToString(), mWalkList, mWalkSpeed, i + 3,new Idler());
                 robotList.Add(idler);
 
             }
