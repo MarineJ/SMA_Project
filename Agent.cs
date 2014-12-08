@@ -52,9 +52,6 @@ namespace SMA_Project_V1
             ent = SceneManager.CreateEntity(nom, mesh);
             // la forme du cube
             cube = SceneManager.CreateEntity("cube" + nom, "cube.mesh");
-
-
-
             //  Robot SceneNode
             node = SceneManager.RootSceneNode.CreateChildSceneNode(nom + "Node", new Vector3(0.0f, 0.0f, 0.25f));
             // le noeud enfant du robot, celui du cube

@@ -22,10 +22,6 @@ namespace SMA_Project_V1
             agent.MComportement = new Idler();
         }
 
-        public void remaneWhatYouAre(Agent agent)
-        {
-
-        }
 
         public void negociateWithManager(Agent negociator, Agent other)
         {
