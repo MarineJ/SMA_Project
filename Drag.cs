@@ -5,15 +5,47 @@ using Mogre;
 
 namespace SMA_Project_V1
 {
-    class Drag : Agent
+    class Drag : IComportement
     {
 
-        public Drag(string mesh, SceneManager SceneManager, string nom, LinkedList<Vector3> walklist, float walkspeed, int index) :
-            base(mesh, SceneManager, nom, walklist, walkspeed, index) { }
+        public Drag() { }
 
 
-        public override bool Comportement(FrameEvent evt, Random rand) { return (true); }
+        public  bool Comportement(FrameEvent evt, Random rand, Agent agent) { return (true); }
 
+        public void evolve(Agent agent)
+        {
+        }
+
+        public void regress(Agent agent)
+        {
+            agent.MComportement = new Idler();
+        }
+
+        public void remaneWhatYouAre(Agent agent)
+        {
+
+        }
+
+        public void negociateWithManager(Agent negociator, Agent other)
+        {
+
+        }
+
+        public void negociateWithIdler(Agent negociator, Agent other)
+        {
+
+        }
+
+        public void negociateWithDrag(Agent negociator, Agent other)
+        {
+
+        }
+
+        public void negociateWithBuilder(Agent negociator, Agent other)
+        {
+
+        }
 
     }
 }

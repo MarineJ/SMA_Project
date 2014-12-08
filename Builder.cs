@@ -24,22 +24,24 @@ namespace SMA_Project_V1
 
         }
 
-        public void negociateWithManager()
+        //
+        public void negociateWithManager(Agent negociator, Agent other)
         {
 
         }
 
-        public void negociateWithIdler()
+        //
+        public void negociateWithIdler(Agent negociator, Agent other)
         {
 
         }
 
-        public void negociateWithDrag()
+        public void negociateWithDrag(Agent negociator, Agent other)
         {
 
         }
 
-        public void negociateWithBuilder()
+        public void negociateWithBuilder(Agent negociator, Agent other)
         {
 
         }

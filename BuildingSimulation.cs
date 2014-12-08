@@ -146,13 +146,13 @@ namespace SMA_Project_V1
             for (int i = 0; i < _AgentsNumber/3; i = i+4)
             {
 
-                Builder builder = new Builder("robot.mesh",SceneManager, "Robot" + i.ToString(), mWalkList, mWalkSpeed, i);
+                Agent builder = new Agent("robot.mesh",SceneManager, "Robot" + i.ToString(), mWalkList, mWalkSpeed, i, new Builder());
                 robotList.Add(builder);
-                Manager manager = new Manager("ninja.mesh", SceneManager, "Robot" + (i+1).ToString(), mWalkList, mWalkSpeed, i+1);
+                Manager manager = new Manager("ninja.mesh", SceneManager, "Robot" + (i + 1).ToString(), mWalkList, mWalkSpeed, i + 1, new Manager());
                 robotList.Add(manager);
-                Drag drag = new Drag("robot.mesh", SceneManager, "Robot" + (i + 2).ToString(), mWalkList, mWalkSpeed, i + 2);
+                Drag drag = new Drag("robot.mesh", SceneManager, "Robot" + (i + 2).ToString(), mWalkList, mWalkSpeed, i + 2, new Drag());
                 robotList.Add(drag);
-                Idler idler = new Idler("robot.mesh", SceneManager, "Robot" + (i + 3).ToString(), mWalkList, mWalkSpeed, i + 3);
+                Idler idler = new Idler("robot.mesh", SceneManager, "Robot" + (i + 3).ToString(), mWalkList, mWalkSpeed, i + 3,new Idler());
                 robotList.Add(idler);
 
             }
@@ -200,7 +200,7 @@ namespace SMA_Project_V1
             {
                 int tmp = rand.Next(0, TMProbotList.Count);
                 TMProbotList[tmp].animation("Walk");
-                TMProbotList[tmp].Comportement(evt,rand);
+                TMProbotList[tmp].MComportement.Comportement(evt, rand, TMProbotList[tmp]);
                 TMProbotList.Remove(TMProbotList[tmp]);
             } while (TMProbotList.Count > 0);
 

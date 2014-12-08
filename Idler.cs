@@ -11,16 +11,15 @@ namespace SMA_Project_V1
         public Idler() { }
 
 
-
         // le comportement de l'agent lors de la simulation
-        public override bool Comportement(FrameEvent evt, Random rand, Agent agent)
+        public  bool Comportement(FrameEvent evt, Random rand, Agent agent)
         {
             // visibilité du cube
             //cube.Visible = bcube;
 
             if(agent.MWalkList.Count != 2)
             {
-                marcheAleatoire(rand);
+                marcheAleatoire(rand, agent);
             }
 
             // vitesse de l'agent
@@ -41,10 +40,10 @@ namespace SMA_Project_V1
             else
             {
                 //l'agent bouge
-                node.Translate(mDirection * move);
+                agent.Node.Translate(agent.MDirection * move);
             }
             //Passe à la frame d'animation suivante
-            mAnimationState.AddTime(evt.timeSinceLastFrame * mWalkSpeed / 20);
+            agent.MAnimationState.AddTime(evt.timeSinceLastFrame * agent.MWalkSpeed / 20);
 
             return true;
 
@@ -53,12 +52,12 @@ namespace SMA_Project_V1
 
 
         // le manager marche aléatoirement
-        public void marcheAleatoire(Random rand, Agent agent, SceneManager sc)
+        public void marcheAleatoire(Random rand, Agent agent)
         {
             agent.MWalkList.Clear();
 
             double angle = rand.NextDouble() * System.Math.PI;
-            Vector3 tmp = new Vector3((float)(1500 * System.Math.Cos(angle)), sc.node.Position.y, (float)(1500 * System.Math.Sin(angle)));
+            Vector3 tmp = new Vector3((float)(1500 * System.Math.Cos(angle)), agent.Node.Position.y, (float)(1500 * System.Math.Sin(angle)));
             agent.MWalkList.AddLast(tmp);
         }
 
