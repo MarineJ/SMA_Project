@@ -49,6 +49,34 @@ namespace SMA_Project_V1
 
         }
 
+        public void evolve(Agent agent)
+        {
+        }
+
+        public void regress(Agent agent)
+        {
+        }
+
+        public void remaneWhatYouAre(Agent agent)
+        {
+        }
+
+        public void negociateWithManager(Agent negociator, Agent other)
+        {
+        }
+
+        public void negociateWithDrag(Agent negociator, Agent other)
+        {
+        }
+
+        public void negociateWithIdler(Agent negociator, Agent other)
+        {
+        }
+
+        public void negociateWithBuilder(Agent negociator, Agent other)
+        {
+        }
+
 
 
         // le manager marche aléatoirement
