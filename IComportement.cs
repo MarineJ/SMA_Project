@@ -9,7 +9,6 @@ namespace SMA_Project_V1
     {
         public abstract bool Comportement(FrameEvent evt, Random rand, Agent agent);
 
-
         public abstract bool evolve();
 
         public abstract bool regress();
