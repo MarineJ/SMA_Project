@@ -32,7 +32,23 @@ namespace SMA_Project_V1
         //
         public void negociateWithManager(Agent negociator, Agent other)
         {
+            Random rand = new Random();
+            int num = rand.Next(300);
 
+            if (num < other.MLeaderShip)
+            {
+                Tools.updateValue(negociator.MMotivation, Tools.MOTIVATION_UP);
+            }
+            else if (num < other.MLeaderShip + negociator.MMotivation)
+            {
+                evolve(negociator);
+                Tools.updateValue(other.MLeaderShip, Tools.LEADERSHIP_UP);
+            }
+            else if(num < other.MLeaderShip + negociator.MMotivation + negociator.MFatigue)
+            {
+                regress(negociator);
+                Tools.updateValue(other.MLeaderShip, Tools.LEADERSHIP_DOWN);
+            }
         }
 
         //
