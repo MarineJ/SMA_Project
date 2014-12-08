@@ -54,7 +54,16 @@ namespace SMA_Project_V1
         //
         public void negociateWithIdler(Agent negociator, Agent other)
         {
-
+            Random rand = new Random();
+            int num = rand.Next(300);
+            if (num < other.MMotivation + negociator.MSimpathy)
+            {
+                other.MComportement.evolve(other);
+            }
+            else if (num < other.MMotivation + negociator.MSimpathy + other.MAngryness)
+            {
+                regress(negociator);
+            }
         }
 
         public void negociateWithDrag(Agent negociator, Agent other)

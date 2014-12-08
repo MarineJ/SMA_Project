@@ -98,37 +98,40 @@ namespace SMA_Project_V1
 
         public void negociateWithDrag(Agent negociator, Agent other)
         {
-            /*
-             * L'évolution dépend de Angryness et du leadership du manager
-             * Il a une chance d'évoluer en Builder, regresser en Drag ou de rester Idler
-             * Si il devient builder --> le manager gagne l en leadership
-             * Si il devient si il regresse en Drag --> le manager perd l en leadership
-             * Si il reste Idler --> Angryness ++
-             */
+           
             Random rand = new Random();
-            int num = rand.Next(200); //Random pondéré en fonction de 2 caractéristiques
-            if (num < negociator.MAngryness)
+            int num = rand.Next(200);
+            if (num < other.MMotivation)
             {
                 regress(negociator);
-                Tools.updateValue(other.MLeaderShip, Tools.LEADERSHIP_DOWN);
             }
-            else if (num < negociator.MAngryness + other.MLeaderShip)
+            else if (num < other.MMotivation + negociator.MSimpathy)
             {
-                evolve(negociator);
-                Tools.updateValue(other.MLeaderShip, Tools.LEADERSHIP_UP);
+                other.MComportement.evolve(other);
             }
             else
             {
-                Tools.updateValue(negociator.MAngryness, Tools.ANGRYNESS_UP);
+                Tools.updateValue(negociator.MFatigue, Tools.FATIGUE_UP);
             }
         }
 
         public void negociateWithIdler(Agent negociator, Agent other)
         {
+            Console.WriteLine("Negociation between two idlers");
         }
 
         public void negociateWithBuilder(Agent negociator, Agent other)
         {
+            Random rand = new Random();
+            int num = rand.Next(300);
+            if (num < negociator.MMotivation + other.MSimpathy)
+            {
+                evolve(negociator);
+            }
+            else if (num < negociator.MMotivation + other.MSimpathy + negociator.MAngryness)
+            {
+                other.MComportement.regress(other);
+            }
         }
 
 

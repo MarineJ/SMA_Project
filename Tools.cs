@@ -12,6 +12,7 @@ namespace SMA_Project_V1
     internal static const int LEADERSHIP_DOWN = -2;
     internal static const int ANGRYNESS_UP = 2;
     internal static const int MOTIVATION_UP = 5;
+    internal static const int FATIGUE_UP = 4;
 
     internal static const int BUILDER_ANGRYNESS_INITIAL = 50;
     internal static const int BUILDER_FATIGUE_INITIAL = 50;

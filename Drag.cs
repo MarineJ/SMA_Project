@@ -8,18 +8,25 @@ namespace SMA_Project_V1
     class Drag : IComportement
     {
 
-        public Drag() { }
+        public Drag(Agent agent) 
+        {
+            agent.MAngryness = Tools.DRAG_ANGRYNESS_INITIAL;
+            agent.MFatigue = Tools.DRAG_FATIGUE_INITIAL;
+            agent.MLeaderShip = Tools.DRAG_LEADERSHIP_INITIAL;
+            agent.MMotivation = Tools.DRAG_MOTIVATION_INITIAL;
+            agent.MSimpathy = Tools.DRAG_SYMPATHY_INITIAL;
+        }
 
 
         public  bool Comportement(FrameEvent evt, Random rand, Agent agent) { return (true); }
 
         public void evolve(Agent agent)
         {
+            agent.MComportement = new Idler(agent);
         }
 
         public void regress(Agent agent)
         {
-            agent.MComportement = new Idler();
         }
 
 
@@ -43,6 +50,20 @@ namespace SMA_Project_V1
 
         public void negociateWithIdler(Agent negociator, Agent other)
         {
+            Random rand = new Random();
+            int num = rand.Next(200);
+            if (num < negociator.MMotivation)
+            {
+                other.MComportement.regress(other);
+            }
+            else if (num < negociator.MMotivation + other.MSimpathy)
+            {
+                evolve(negociator);
+            }
+            else
+            {
+                Tools.updateValue(other.MFatigue, Tools.FATIGUE_UP);
+            }
 
         }
 
