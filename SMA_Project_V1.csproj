@@ -73,6 +73,7 @@
     <Compile Include="SimulationSetUp.Designer.cs">
       <DependentUpon>SimulationSetUp.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tools.cs" />
     <Compile Include="WindowMaker.cs">
       <SubType>Form</SubType>
     </Compile>
