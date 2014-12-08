@@ -5,13 +5,43 @@ using Mogre;
 
 namespace SMA_Project_V1
 {
-    class Builder : Agent
+    class Builder : IComportement
     {
 
-        public Builder(string mesh, SceneManager SceneManager, string nom, LinkedList<Vector3> walklist, float walkspeed, int index) :
-            base(mesh, SceneManager, nom, walklist, walkspeed, index){ }
+        public bool Comportement(FrameEvent evt, Random rand, Agent agent) { return (true); }
 
+        public void evolve(Agent agent)
+        {
+        }
 
-        public override bool Comportement(FrameEvent evt, Random rand) { return (true); }
+        public void regress(Agent agent)
+        {
+            agent.MComportement = new Builder();
+        }
+
+        public void remaneWhatYouAre(Agent agent)
+        {
+
+        }
+
+        public void negociateWithManager()
+        {
+
+        }
+
+        public void negociateWithIdler()
+        {
+
+        }
+
+        public void negociateWithDrag()
+        {
+
+        }
+
+        public void negociateWithBuilder()
+        {
+
+        }
     }
 }

@@ -9,19 +9,19 @@ namespace SMA_Project_V1
     {
         public abstract bool Comportement(FrameEvent evt, Random rand, Agent agent);
 
-        public abstract bool evolve();
+        public abstract bool evolve(Agent agent);
 
-        public abstract bool regress();
+        public abstract bool regress(Agent agent);
 
-        public abstract void remaneWhatYouAre();
+        public abstract void remaneWhatYouAre(Agent agent);
 
-        public abstract void negociateWithManager();
+        public abstract void negociateWithManager(Agent negociator, Agent other);
 
-        public abstract void negociateWithDrag();
+        public abstract void negociateWithDrag(Agent negociator, Agent other);
 
-        public abstract void negociateWithIdler();
+        public abstract void negociateWithIdler(Agent negociator, Agent other);
 
-        public abstract void negociateWithBuilder();
+        public abstract void negociateWithBuilder(Agent negociator, Agent other);
 
 
 

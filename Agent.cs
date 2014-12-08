@@ -24,7 +24,7 @@ namespace SMA_Project_V1
         private SceneNode nodecube;
         private SceneManager mSceneManager;
         private SceneNode node;
-
+        private IComportement mComportement;
  
 
         // Agent state
@@ -35,14 +35,17 @@ namespace SMA_Project_V1
         private int mAngryness;
         private int mFavoriteColor;
 
+
+
        
 
-        public Agent(string mesh, SceneManager SceneManager, string nom, LinkedList<Vector3> walklist, float walkspeed, int index)
+        public Agent(string mesh, SceneManager SceneManager, string nom, LinkedList<Vector3> walklist, float walkspeed, int index, IComportement comportement)
         {
 
             //SceneManager = this.SceneManager;
             // Create the Robot entity
             name = nom;
+            mComportement = comportement;
             mIndexInList = index;
             mSceneManager = SceneManager;
             // la forme du robot
@@ -138,6 +141,12 @@ namespace SMA_Project_V1
 
 
         #region properties
+
+        internal IComportement MComportement
+        {
+            get { return mComportement; }
+            set { mComportement = value; }
+        } 
 
         public int MFavoriteColor
         {
