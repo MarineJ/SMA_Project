@@ -8,6 +8,8 @@ namespace SMA_Project_V1
     class Idler : IComportement
     {
 
+
+        
         public Idler() { }
 
 
@@ -57,12 +59,30 @@ namespace SMA_Project_V1
         {
         }
 
-        public void remaneWhatYouAre(Agent agent)
-        {
-        }
 
         public void negociateWithManager(Agent negociator, Agent other)
         {
+            // l'évolution dépend de Angryness et du leadership du manager
+            // il a une chance d'évoluer en Builder, regresser en Drag ou de rester Idler
+            // si il devient builder --> le manager gagne l en leadership
+            // si il devient si il regresse en Drag --> le manager perd l en leadership
+            // si il reste Idler --> Angryness ++
+            Random rand = new Random();
+            int num = rand.Next(200);
+            if (num < negociator.MAngryness)
+            {
+                regress(negociator);
+                Tools.updateValue(other.MLeaderShip, Tools.LEADERSHIP_DOWN);
+            }
+            else if (num < negociator.MAngryness + other.MLeaderShip)
+            {
+                evolve(negociator);
+                Tools.updateValue(other.MLeaderShip, Tools.LEADERSHIP_UP);
+            }
+            else
+            {
+                Tools.updateValue(negociator.MAngryness, Tools.ANGRYNESS_UP);
+            }
         }
 
         public void negociateWithDrag(Agent negociator, Agent other)
