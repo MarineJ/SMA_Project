@@ -29,7 +29,20 @@ namespace SMA_Project_V1
 
         public void negociateWithManager(Agent negociator, Agent other)
         {
-
+            Random rand = new Random();
+            int num = rand.Next(300);
+            if (num < other.MLeaderShip)
+            {
+                evolve(negociator);
+            }
+            else if (num < other.MLeaderShip + negociator.MAngryness)
+            {
+                Tools.updateValue(negociator.MAngryness, Tools.ANGRYNESS_UP);
+            }
+            else if (num < other.MLeaderShip + negociator.MAngryness + negociator.MMotivation)
+            {
+                Tools.updateValue(negociator.MMotivation, Tools.MOTIVATION_UP);
+            }
         }
 
         public void negociateWithIdler(Agent negociator, Agent other)
