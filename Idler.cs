@@ -10,7 +10,14 @@ namespace SMA_Project_V1
 
 
         
-        public Idler() { }
+        public Idler(Agent agent) 
+        {
+            agent.MAngryness = Tools.IDLER_ANGRYNESS_INITIAL;
+            agent.MFatigue = Tools.IDLER_FATIGUE_INITIAL;
+            agent.MLeaderShip = Tools.IDLER_LEADERSHIP_INITIAL;
+            agent.MMotivation = Tools.IDLER_MOTIVATION_INITIAL;
+            agent.MSimpathy = Tools.IDLER_SYMPATHY_INITIAL;
+        }
 
 
         // le comportement de l'agent lors de la simulation
