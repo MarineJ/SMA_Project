@@ -9,31 +9,84 @@ namespace SMA_Project_V1
     abstract class Agent
     {
         //SceneManager SceneManager;
-        protected AnimationState mAnimationState = null; //The AnimationState the moving object
-        protected float mDistance = 0.0f;              //The distance the object has left to travel
-        protected Vector3 mDirection = Vector3.ZERO;   // The direction the object is moving
-        protected Vector3 mDestination = Vector3.ZERO; // The destination the object is moving towards
-        protected LinkedList<Vector3> mWalkList = null; // A doubly linked containing the waypoints
-        protected float mWalkSpeed = 50.0f;  // The speed at which the object is moving
-        protected bool mWalking = false;
-        protected String name;
-        protected int mIndexInList = 0;
-        protected Entity ent;
-        protected SceneNode node;
-        protected bool bcube = false;
-        protected Entity cube;
-        protected SceneNode nodecube;
+        private AnimationState mAnimationState = null; //The AnimationState the moving object
+
+        public AnimationState MAnimationState
+        {
+            get { return mAnimationState; }
+            set { mAnimationState = value; }
+        }
+        private float mDistance = 0.0f;              //The distance the object has left to travel
+
+        public float MDistance
+        {
+            get { return mDistance; }
+            set { mDistance = value; }
+        }
+        private Vector3 mDirection = Vector3.ZERO;   // The direction the object is moving
+
+        public Vector3 MDirection
+        {
+            get { return mDirection; }
+            set { mDirection = value; }
+        }
+        private Vector3 mDestination = Vector3.ZERO; // The destination the object is moving towards
+        private LinkedList<Vector3> mWalkList = null; // A doubly linked containing the waypoints
+
+        public LinkedList<Vector3> MWalkList
+        {
+            get { return mWalkList; }
+            set { mWalkList = value; }
+        }
+        private float mWalkSpeed = 50.0f;  // The speed at which the object is moving
+
+        public float MWalkSpeed
+        {
+            get { return mWalkSpeed; }
+            set { mWalkSpeed = value; }
+        }
+        private bool mWalking = false;
+        private String name;
+        private int mIndexInList = 0;
+        private Entity ent;
+
+        public Entity Ent
+        {
+            get { return ent; }
+            set { ent = value; }
+        }
+        private SceneNode node;
+
+        public SceneNode Node
+        {
+            get { return node; }
+            set { node = value; }
+        }
+        private bool bcube = false;
+        private Entity cube;
+
+        public Entity Cube
+        {
+            get { return cube; }
+            set { cube = value; }
+        }
+        private SceneNode nodecube;
+        private SceneManager mSceneManager;
+
+        public SceneManager MSceneManager
+        {
+            get { return mSceneManager; }
+            set { mSceneManager = value; }
+        }
+
 
         // Agent state
-        protected int mLeaderShip;
-        protected int mInitiative;
-        protected int mFavoriteColor;
-        protected int mFriends;
-        protected float mTauxParticipation;
-        protected string mRole; // {batisseur, manageur, feigneant, troll}
-
-
-
+        private int mLeaderShip;
+        private int mInitiative;
+        private int mFavoriteColor;
+        private int mFriends;
+        private float mTauxParticipation;
+        private string mRole; // {batisseur, manageur, feigneant, troll}
 
         public Agent(string mesh, SceneManager SceneManager, string nom, LinkedList<Vector3> walklist, float walkspeed, int index)
         {
@@ -42,6 +95,7 @@ namespace SMA_Project_V1
             // Create the Robot entity
             name = nom;
             mIndexInList = index;
+            mSceneManager = SceneManager;
             // la forme du robot
             ent = SceneManager.CreateEntity(nom, mesh);
             // la forme du cube

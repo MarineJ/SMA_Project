@@ -20,18 +20,37 @@ namespace SMA_Project_V1
         {
             try
             {
-                BuildingSimulation win = new BuildingSimulation();
+                BuildingSimulation win = new BuildingSimulation(AgentsTrackBar.Value, (float)TimeTrackBar.Value / (float)100);
+                this.Close();
                 win.Go();
+              
             }
             catch (System.Runtime.InteropServices.SEHException)
             {
                 if (OgreException.IsThrown)
-                    MessageBox.Show(OgreException.LastException.FullDescription, "An Ogre exception has occurred!");
+                {
+                    MessageBox.Show(OgreException.LastException.FullDescription, "An Ogre exception has occurred!");  
+                }
                 else
                     throw;
             }
+          
+        }
 
-            this.Close();
+        private void AgentsTrackBar_Scroll(object sender, EventArgs e)
+        {
+            CurrentAgentsNumber.Text = AgentsTrackBar.Value.ToString();
+
+        }
+
+        private void SimulationLast_Scroll(object sender, EventArgs e)
+        {
+            CurrentLastSimulation.Text = SimulationLast.Value.ToString();
+        }
+
+        private void TimeTrackBar_Scroll(object sender, EventArgs e)
+        {
+            TimeValue.Text = TimeTrackBar.Value.ToString();
         }
 
     }

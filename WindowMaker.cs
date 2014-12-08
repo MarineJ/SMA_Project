@@ -27,7 +27,7 @@ namespace SMA_Project_V1
     public WindowMaker()
     {
         this.InitializeComponent();
-        this.Size = new Size(800, 600);
+        this.Size = new Size(900, 700);
         Disposed += new EventHandler(OgreForm_Disposed);
         Resize += new EventHandler(OgreForm_Resize);
     }
@@ -252,5 +252,6 @@ namespace SMA_Project_V1
 
     // Nested Types
     public delegate void SceneEventHandler(WindowMaker win);
+    
     }
 }

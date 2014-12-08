@@ -5,47 +5,46 @@ using Mogre;
 
 namespace SMA_Project_V1
 {
-    class Manager : Agent
+    class ComportementManager : IComportement
     {
 
-        public Manager(string mesh, SceneManager SceneManager, string nom, LinkedList<Vector3> walklist, float walkspeed, int index) :
-            base(mesh, SceneManager, nom, walklist, walkspeed, index) { }
+        public ComportementManager() { }
 
 
 
         // le comportement de l'agent lors de la simulation
-        public override bool Comportement(FrameEvent evt, Random rand)
+        public  bool Comportement(FrameEvent evt, Random rand, Agent agent)
         {
             // visibilité du cube
             //cube.Visible = bcube;
 
-            if (mWalkList.Count != 2)
+            if(agent.MWalkList.Count != 2)
             {
-                marcheAleatoire(rand);
+                marcheAleatoire(rand, agent);
             }
 
             // vitesse de l'agent
-            float move = mWalkSpeed * (evt.timeSinceLastFrame);
+            float move = agent.MWalkSpeed * (evt.timeSinceLastFrame);
             // distance à parcourir
-            mDistance -= move;
+            agent.MDistance -= move;
 
             //distance en ligne droite
-            if (mDistance <= 0.0f)
+            if (agent.MDistance <= 0.0f)
             {   // si on est arrivé
-                if (!TurnNextLocation())
+                if (!agent.TurnNextLocation())
                 {
                     // on attend
-                    mAnimationState = ent.GetAnimationState("Idle");
+                    agent.MAnimationState = agent.Ent.GetAnimationState("Idle");
                     return true;
                 }
             }
             else
             {
                 //l'agent bouge
-                node.Translate(mDirection * move);
+                agent.Node.Translate(agent.MDirection * move);
             }
             //Passe à la frame d'animation suivante
-            mAnimationState.AddTime(evt.timeSinceLastFrame * mWalkSpeed / 20);
+            agent.MAnimationState.AddTime(evt.timeSinceLastFrame * agent.MWalkSpeed / 20);
 
             return true;
 
@@ -54,13 +53,13 @@ namespace SMA_Project_V1
 
 
         // le manager marche aléatoirement
-        public void marcheAleatoire(Random rand)
+        public void marcheAleatoire(Random rand, Agent agent)
         {
-            mWalkList.Clear();
+            agent.MWalkList.Clear();
 
             double angle = rand.NextDouble() * System.Math.PI;
             Vector3 tmp = new Vector3((float)(1500 * System.Math.Cos(angle)), node.Position.y, (float)(1500 * System.Math.Sin(angle)));
-            mWalkList.AddLast(tmp);
+            agent.MWalkList.AddLast(tmp);
         }
 
     }

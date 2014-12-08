@@ -8,14 +8,22 @@ namespace SMA_Project_V1
     class BuildingSimulation : WindowMaker
     {
         Vector3 mDirection = Vector3.ZERO;   // The direction the object is moving
-        Vector3 mDestination = Vector3.ZERO; // The destination the object is moving towards
+        Vector3 mDestination = Vector3.ZERO;
+        float _TimeSpeed = 1;
+        // The destination the object is moving towards
         LinkedList<Vector3> mWalkList = null; // A doubly linked containing the waypoints
-        float mWalkSpeed = 1050.0f;  // The speed at which the object is moving
-        List<Robot> robotList;
-        List<Robot> TMProbotList;
+        float mWalkSpeed = 200.0f;  // The speed at which the object is moving
+        List<Agent> robotList;
+        List<Agent> TMProbotList;
+        int _AgentsNumber = 0;
         Random rand = new Random();
 
-        public BuildingSimulation() : base() { }
+        public BuildingSimulation(int agentNumb, float timeSpeed) : base() 
+        {
+            _AgentsNumber = agentNumb;
+            _TimeSpeed = timeSpeed;
+            mWalkSpeed = mWalkSpeed * _TimeSpeed;
+        }
 
         protected  override void CreateCamera()
         {
@@ -134,18 +142,24 @@ namespace SMA_Project_V1
             mWalkList.AddLast(new Vector3(-100.0f, 0.0f, -200.0f));
             mWalkList.AddLast(new Vector3(0.0f, 0.0f, 25.0f));
 
-            robotList = new List<Robot>();
-            for (int i = 0; i < 10; i++)
+            robotList = new List<Agent>();
+            for (int i = 0; i < _AgentsNumber/3; i = i+4)
             {
 
-                Robot robot = new Robot(SceneManager, "Robot" + i.ToString(), mWalkList, mWalkSpeed);
-                robotList.Add(robot);
+                Builder builder = new Builder("robot.mesh",SceneManager, "Robot" + i.ToString(), mWalkList, mWalkSpeed, i);
+                robotList.Add(builder);
+                Manager manager = new Manager("ninja.mesh", SceneManager, "Robot" + (i+1).ToString(), mWalkList, mWalkSpeed, i+1);
+                robotList.Add(manager);
+                Drag drag = new Drag("robot.mesh", SceneManager, "Robot" + (i + 2).ToString(), mWalkList, mWalkSpeed, i + 2);
+                robotList.Add(drag);
+                Idler idler = new Idler("robot.mesh", SceneManager, "Robot" + (i + 3).ToString(), mWalkList, mWalkSpeed, i + 3);
+                robotList.Add(idler);
 
             }
 
             //Console.WriteLine("passer");
 
-            TMProbotList = new List<Robot>(robotList);
+            TMProbotList = new List<Agent>(robotList);
         }
 
         protected override void CreateOverlay()
@@ -180,14 +194,13 @@ namespace SMA_Project_V1
         bool FrameStarted(FrameEvent evt)
         {
 
-            TMProbotList = new List<Robot>(robotList);
+            TMProbotList = new List<Agent>(robotList);
 
             do
             {
-
                 int tmp = rand.Next(0, TMProbotList.Count);
                 TMProbotList[tmp].animation("Walk");
-                TMProbotList[tmp].Comportement(evt);
+                TMProbotList[tmp].Comportement(evt,rand);
                 TMProbotList.Remove(TMProbotList[tmp]);
             } while (TMProbotList.Count > 0);
 
