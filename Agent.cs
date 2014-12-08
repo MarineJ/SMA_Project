@@ -10,83 +10,32 @@ namespace SMA_Project_V1
     {
         //SceneManager SceneManager;
         private AnimationState mAnimationState = null; //The AnimationState the moving object
-
-        public AnimationState MAnimationState
-        {
-            get { return mAnimationState; }
-            set { mAnimationState = value; }
-        }
-        private float mDistance = 0.0f;              //The distance the object has left to travel
-
-        public float MDistance
-        {
-            get { return mDistance; }
-            set { mDistance = value; }
-        }
+        private float mDistance = 0.0f;
         private Vector3 mDirection = Vector3.ZERO;   // The direction the object is moving
-
-        public Vector3 MDirection
-        {
-            get { return mDirection; }
-            set { mDirection = value; }
-        }
-        private Vector3 mDestination = Vector3.ZERO; // The destination the object is moving towards
+        private Vector3 mDestination = Vector3.ZERO;
         private LinkedList<Vector3> mWalkList = null; // A doubly linked containing the waypoints
-
-        public LinkedList<Vector3> MWalkList
-        {
-            get { return mWalkList; }
-            set { mWalkList = value; }
-        }
         private float mWalkSpeed = 50.0f;  // The speed at which the object is moving
-
-        public float MWalkSpeed
-        {
-            get { return mWalkSpeed; }
-            set { mWalkSpeed = value; }
-        }
         private bool mWalking = false;
         private String name;
         private int mIndexInList = 0;
         private Entity ent;
-
-        public Entity Ent
-        {
-            get { return ent; }
-            set { ent = value; }
-        }
-        private SceneNode node;
-
-        public SceneNode Node
-        {
-            get { return node; }
-            set { node = value; }
-        }
         private bool bcube = false;
         private Entity cube;
-
-        public Entity Cube
-        {
-            get { return cube; }
-            set { cube = value; }
-        }
         private SceneNode nodecube;
         private SceneManager mSceneManager;
+        private SceneNode node;
 
-        public SceneManager MSceneManager
-        {
-            get { return mSceneManager; }
-            set { mSceneManager = value; }
-        }
-
+ 
 
         // Agent state
         private int mLeaderShip;
-        private int mInitiative;
+        private int mFatigue;
+        private int mMotivation;
+        private int mSimpathy;
+        private int mAngryness;
         private int mFavoriteColor;
-        private int mFriends;
-        private float mTauxParticipation;
-        private string mRole; // {batisseur, manageur, feigneant, troll}
+
+       
 
         public Agent(string mesh, SceneManager SceneManager, string nom, LinkedList<Vector3> walklist, float walkspeed, int index)
         {
@@ -122,7 +71,6 @@ namespace SMA_Project_V1
             mWalkSpeed = walkspeed;
         }
 
-
         // attive une animation en boucle
         public  void animation(string typeAnimation)
         {
@@ -131,7 +79,6 @@ namespace SMA_Project_V1
             mAnimationState.Loop = true;
             mAnimationState.Enabled = true;
         }
-
 
         //passe au suivant
         protected bool nextLocation()
@@ -181,22 +128,112 @@ namespace SMA_Project_V1
             return false;
         }
 
-        public void changeYourColor(Agent agent) 
+        public void negociateColor(Agent agent) 
         {
             agent.mFavoriteColor = this.mFavoriteColor;
         }
 
-        public virtual void evolve()
+    
+
+
+
+        #region properties
+
+        public int MFavoriteColor
         {
-            
+            get { return mFavoriteColor; }
+            set { mFavoriteColor = value; }
+        }
+        
+
+        public int MAngryness
+        {
+            get { return mAngryness; }
+            set { mAngryness = value; }
         }
 
-        public virtual bool Comportement(FrameEvent evt, Random rand) { return (true); }
-         
-        public virtual void initiateNegociation(List<Agent> agentsInRange)
+        public int MSimpathy
         {
-
+            get { return mSimpathy; }
+            set { mSimpathy = value; }
         }
+
+        public int MMotivation
+        {
+            get { return mMotivation; }
+            set { mMotivation = value; }
+        }
+
+        public int MFatigue
+        {
+            get { return mFatigue; }
+            set { mFatigue = value; }
+        }
+
+        public int MLeaderShip
+        {
+            get { return mLeaderShip; }
+            set { mLeaderShip = value; }
+        }
+
+        public AnimationState MAnimationState
+        {
+            get { return mAnimationState; }
+            set { mAnimationState = value; }
+        }
+        //The distance the object has left to travel
+
+        public float MDistance
+        {
+            get { return mDistance; }
+            set { mDistance = value; }
+        }
+
+        public Vector3 MDirection
+        {
+            get { return mDirection; }
+            set { mDirection = value; }
+        }
+        // The destination the object is moving towards
+
+        public LinkedList<Vector3> MWalkList
+        {
+            get { return mWalkList; }
+            set { mWalkList = value; }
+        }
+
+        public float MWalkSpeed
+        {
+            get { return mWalkSpeed; }
+            set { mWalkSpeed = value; }
+        }
+
+        public Entity Ent
+        {
+            get { return ent; }
+            set { ent = value; }
+        }
+
+
+        public SceneNode Node
+        {
+            get { return node; }
+            set { node = value; }
+        }
+
+        public Entity Cube
+        {
+            get { return cube; }
+            set { cube = value; }
+        }
+
+        public SceneManager MSceneManager
+        {
+            get { return mSceneManager; }
+            set { mSceneManager = value; }
+        }
+        #endregion
+
 
     }
 }
