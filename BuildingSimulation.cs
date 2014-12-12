@@ -17,6 +17,9 @@ namespace SMA_Project_V1
         List<Agent> TMProbotList;
         int _AgentsNumber = 0;
         Random rand = new Random();
+        List<Cubi> cubeList;
+        int hauteur = 3000;
+        int Largeur = 3000;
 
         public BuildingSimulation(int agentNumb, float timeSpeed) : base() 
         {
@@ -63,7 +66,7 @@ namespace SMA_Project_V1
             Plane plane = new Plane(Vector3.UNIT_Y, 0);
             MeshManager.Singleton.CreatePlane("ground",
             ResourceGroupManager.DEFAULT_RESOURCE_GROUP_NAME, plane,
-            1500, 1500, 20, 20, true, 1, 5, 5, Vector3.UNIT_Z);
+            15000, 15000, 20, 20, true, 1, 5, 5, Vector3.UNIT_Z);
 
             Entity groundEnt = SceneManager.CreateEntity("GroundEntity", "ground");
             SceneManager.RootSceneNode.CreateChildSceneNode().AttachObject(groundEnt);
@@ -105,26 +108,6 @@ namespace SMA_Project_V1
             //Lights
             SceneManager.AmbientLight = ColourValue.White;
 
-            /*Light pointLight = SceneManager.CreateLight("pointLight");
-            pointLight.Type = Light.LightTypes.LT_POINT;
-            pointLight.Position = new Vector3(0, 150, 250);
-
-            pointLight.DiffuseColour = ColourValue.Red;
-            pointLight.SpecularColour = ColourValue.Red;
-
-            Light directionalLight = SceneManager.CreateLight("directionalLight");
-            directionalLight.Type = Light.LightTypes.LT_DIRECTIONAL;
-            directionalLight.DiffuseColour = new ColourValue(.25f, .25f, 0);
-            directionalLight.SpecularColour = new ColourValue(.25f, .25f, 0);
-            directionalLight.Direction = new Vector3(0, -1, 1);
-
-            Light spotLight = SceneManager.CreateLight("spotLight");
-            spotLight.Type = Light.LightTypes.LT_SPOTLIGHT;
-            spotLight.DiffuseColour = ColourValue.Blue;
-            spotLight.SpecularColour = ColourValue.Blue;
-
-            spotLight.Direction = new Vector3(-1, -1, 0);
-            spotLight.Position = new Vector3(300, 300, 0);*/
         }
 
         protected override void CreateViewport()
@@ -147,12 +130,16 @@ namespace SMA_Project_V1
             {
 
                 Agent builder = new Agent("robot.mesh",SceneManager, "Robot" + i.ToString(), mWalkList, mWalkSpeed, i, new Builder());
+                builder.initiateBuilderValues();
                 robotList.Add(builder);
                 Agent manager = new Agent("ninja.mesh", SceneManager, "Robot" + (i + 1).ToString(), mWalkList, mWalkSpeed, i + 1, new Manager());
+                manager.initiateManagerValues();
                 robotList.Add(manager);
                 Agent drag = new Agent("robot.mesh", SceneManager, "Robot" + (i + 2).ToString(), mWalkList, mWalkSpeed, i + 2, new Drag());
+                drag.initiateDragValues();
                 robotList.Add(drag);
                 Agent idler = new Agent("robot.mesh", SceneManager, "Robot" + (i + 3).ToString(), mWalkList, mWalkSpeed, i + 3,new Idler());
+                idler.initiateIdlerValues();
                 robotList.Add(idler);
 
             }
@@ -160,6 +147,18 @@ namespace SMA_Project_V1
             //Console.WriteLine("passer");
 
             TMProbotList = new List<Agent>(robotList);
+        }
+
+        protected override void CreateCubes()
+        {
+            // cube
+            cubeList = new List<Cubi>();
+            for (int i = 0; i < 100; i++)
+            {
+                Cubi cub = new Cubi(SceneManager, "Cubi" + i.ToString(), rand.Next(-hauteur / 3, hauteur / 3), rand.Next(-Largeur / 3, Largeur / 3), rand);
+                cubeList.Add(cub);
+            }
+
         }
 
         protected override void CreateOverlay()
@@ -193,15 +192,28 @@ namespace SMA_Project_V1
 
         bool FrameStarted(FrameEvent evt)
         {
-
+            int rayon = 15;
             TMProbotList = new List<Agent>(robotList);
-
             do
             {
-                int tmp = rand.Next(0, TMProbotList.Count);
+
+                int tmp = rand.Next(0, TMProbotList.Count);    
+                List<Agent> TMProbotList2 = new List<Agent>(robotList);
                 TMProbotList[tmp].animation("Walk");
-                TMProbotList[tmp].MComportement.Comportement(evt, rand, TMProbotList[tmp]);
-                TMProbotList.Remove(TMProbotList[tmp]);
+                do
+                {
+                    int tmp2 = rand.Next(0, TMProbotList2.Count);
+                    if (System.Math.Abs(TMProbotList[tmp].Node.Position.x - TMProbotList2[tmp2].Node.Position.x) <= rayon &&
+                        System.Math.Abs(TMProbotList[tmp].Node.Position.z - TMProbotList2[tmp2].Node.Position.z) <= rayon &&
+                        tmp2 != tmp)
+                    {
+                        TMProbotList[tmp].MComportement.Comportement(evt, rand, TMProbotList[tmp], TMProbotList2[tmp2]);
+                    }
+                    TMProbotList2.Remove(TMProbotList2[tmp2]);
+
+                } while (TMProbotList2.Count > 0);
+
+            TMProbotList.Remove(TMProbotList[tmp]);
             } while (TMProbotList.Count > 0);
 
             return true;

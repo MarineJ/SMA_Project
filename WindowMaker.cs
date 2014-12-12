@@ -58,6 +58,8 @@ namespace SMA_Project_V1
 
     protected virtual void CreateAgents(){}
 
+    protected virtual void CreateCubes() { }
+
     protected virtual void CreateOverlay(){}
         
     protected override void Dispose(bool disposing)
@@ -129,6 +131,7 @@ namespace SMA_Project_V1
             this.CreateInputHandler();
             this.CreateOverlay();
             this.CreateAgents();
+            this.CreateCubes();
             base.Disposed += new EventHandler(this.OgreWindow_Disposed);
             this.OnSceneCreating();
         }

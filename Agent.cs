@@ -25,6 +25,7 @@ namespace SMA_Project_V1
         private SceneManager mSceneManager;
         private SceneNode node;
         private IComportement mComportement;
+        private int TimeBeforeNextNegociation = 30;
  
 
         // Agent state
@@ -164,6 +165,25 @@ namespace SMA_Project_V1
             agent.mFavoriteColor = this.mFavoriteColor;
         }
 
+        public void negociate(Agent agent, Agent other)
+        {
+            if (other.MComportement.GetType() == typeof(Builder))
+            {
+                agent.MComportement.negociateWithBuilder(agent, other);
+            }
+            else if (other.MComportement.GetType() == typeof(Manager))
+            {
+                agent.MComportement.negociateWithManager(agent, other);
+            }
+            else if (other.MComportement.GetType() == typeof(Idler))
+            {
+                agent.MComportement.negociateWithIdler(agent, other);
+            }
+            else
+            {
+                agent.MComportement.negociateWithDrag(agent, other);
+            }
+        }
     
 
 

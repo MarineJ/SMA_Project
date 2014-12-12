@@ -7,7 +7,6 @@ namespace SMA_Project_V1
     static class Tools
     {
 
-
     internal  const int LEADERSHIP_UP = 2;
     internal  const int LEADERSHIP_DOWN = -2;
     internal  const int ANGRYNESS_UP = 2;

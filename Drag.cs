@@ -11,6 +11,11 @@ namespace SMA_Project_V1
         {
         }
 
+        public Drag()
+        {
+
+        }
+
         public Drag(Agent agent) 
         {
             agent.MAngryness = Tools.DRAG_ANGRYNESS_INITIAL;
@@ -20,8 +25,11 @@ namespace SMA_Project_V1
             agent.MSimpathy = Tools.DRAG_SYMPATHY_INITIAL;
         }
 
-
-        public  bool Comportement(FrameEvent evt, Random rand, Agent agent) { return (true); }
+        public bool Comportement(FrameEvent evt, Random rand, Agent agent, Agent other)
+        {
+            agent.negociate(agent, other);
+            return (true);
+        }
 
         public void evolve(Agent agent)
         {
