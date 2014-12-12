@@ -13,8 +13,6 @@ namespace SMA_Project_V1
 
         void regress(Agent agent);
 
-        void remaneWhatYouAre(Agent agent);
-
         void negociateWithManager(Agent negociator, Agent other);
 
         void negociateWithDrag(Agent negociator, Agent other);

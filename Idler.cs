@@ -8,7 +8,7 @@ namespace SMA_Project_V1
     class Idler : IComportement
     {
 
-
+        public Idler() { }
         
         public Idler(Agent agent) 
         {

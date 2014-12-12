@@ -10,6 +10,10 @@ namespace SMA_Project_V1
 
         public bool Comportement(FrameEvent evt, Random rand, Agent agent) { return (true); }
 
+        public Builder()
+        {
+        }
+
         public Builder(Agent agent) 
         {
             agent.MAngryness = Tools.BUILDER_ANGRYNESS_INITIAL;
@@ -68,12 +72,38 @@ namespace SMA_Project_V1
 
         public void negociateWithDrag(Agent negociator, Agent other)
         {
-
+            Random rand = new Random();
+            int num = rand.Next(300);
+            if (num < negociator.MSimpathy)
+            {
+                other.MComportement.evolve(other);
+            }
+            else if (num < negociator.MSimpathy + negociator.MAngryness + negociator.MFatigue)
+            {
+                regress(negociator);
+            }
+            else
+            {
+                Tools.updateValue(other.MMotivation, Tools.MOTIVATION_UP);
+            }
         }
 
         public void negociateWithBuilder(Agent negociator, Agent other)
         {
-
+            Random rand = new Random();
+            int num = rand.Next(300);
+            if (num < other.MMotivation + other.MSimpathy)
+            {
+                Tools.updateValue(other.MLeaderShip, Tools.LEADERSHIP_UP);
+            }
+            else if (num < other.MMotivation + other.MSimpathy + other.MFatigue)
+            {
+                regress(negociator);
+            }
+            else
+            {
+                Tools.updateValue(negociator.MSimpathy, Tools.SIMPATHY_UP);
+            }
         }
     }
 }

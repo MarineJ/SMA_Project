@@ -7,6 +7,9 @@ namespace SMA_Project_V1
 {
     class Drag : IComportement
     {
+        public Drag()
+        {
+        }
 
         public Drag(Agent agent) 
         {
@@ -69,12 +72,35 @@ namespace SMA_Project_V1
 
         public void negociateWithDrag(Agent negociator, Agent other)
         {
-
+            Random rand = new Random();
+            int num = rand.Next(300);
+            if (num < negociator.MSimpathy + other.MSimpathy)
+            {
+               evolve(negociator);
+               other.MComportement.evolve(other);
+            }
+            else if (num < negociator.MSimpathy + other.MSimpathy + other.MAngryness)
+            {
+                Tools.updateValue(negociator.MAngryness, Tools.ANGRYNESS_UP);
+            }
         }
 
         public void negociateWithBuilder(Agent negociator, Agent other)
         {
-
+            Random rand = new Random();
+            int num = rand.Next(300);
+            if (num < other.MSimpathy)
+            {
+                evolve(negociator);
+            }
+            else if (num < other.MSimpathy + other.MAngryness + other.MFatigue)
+            {
+                other.MComportement.regress(other);
+            }
+            else
+            {
+                Tools.updateValue(negociator.MMotivation, Tools.MOTIVATION_UP);
+            }
         }
 
     }

@@ -7,6 +7,7 @@ namespace SMA_Project_V1
 {
     class Manager : IComportement
     {
+        public Manager() { }
 
         public Manager(Agent agent) 
         {

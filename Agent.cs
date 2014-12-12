@@ -46,6 +46,37 @@ namespace SMA_Project_V1
             // Create the Robot entity
             name = nom;
             mComportement = comportement;
+            if (comportement.GetType() is Builder)
+            {
+                mAngryness = Tools.BUILDER_ANGRYNESS_INITIAL;
+                mFatigue = Tools.BUILDER_FATIGUE_INITIAL;
+                mLeaderShip = Tools.BUILDER_LEADERSHIP_INITIAL;
+                mMotivation = Tools.BUILDER_MOTIVATION_INITIAL;
+                mSimpathy = Tools.BUILDER_SYMPATHY_INITIAL;
+            }
+            else if(comportement.GetType() is Manager){
+                mAngryness = Tools.MANAGER_ANGRYNESS_INITIAL;
+                mFatigue = Tools.MANAGER_FATIGUE_INITIAL;
+                mLeaderShip = Tools.MANAGER_LEADERSHIP_INITIAL;
+                mMotivation = Tools.MANAGER_MOTIVATION_INITIAL;
+                mSimpathy = Tools.MANAGER_SYMPATHY_INITIAL;
+            }
+            else if (comportement.GetType() is Idler)
+            {
+                mAngryness = Tools.IDLER_ANGRYNESS_INITIAL;
+                mFatigue = Tools.IDLER_FATIGUE_INITIAL;
+                mLeaderShip = Tools.IDLER_LEADERSHIP_INITIAL;
+                mMotivation = Tools.IDLER_MOTIVATION_INITIAL;
+                mSimpathy = Tools.IDLER_SYMPATHY_INITIAL;
+            }
+            else{
+                mAngryness = Tools.DRAG_ANGRYNESS_INITIAL;
+                mFatigue = Tools.DRAG_FATIGUE_INITIAL;
+                mLeaderShip = Tools.DRAG_LEADERSHIP_INITIAL;
+                mMotivation = Tools.DRAG_MOTIVATION_INITIAL;
+                mSimpathy = Tools.DRAG_SYMPATHY_INITIAL;
+            }
+
             mIndexInList = index;
             mSceneManager = SceneManager;
             // la forme du robot
