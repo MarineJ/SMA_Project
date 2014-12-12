@@ -8,6 +8,11 @@ namespace SMA_Project_V1
     class Manager : IComportement
     {
 
+        public Manager()
+        {
+
+        }
+
         public Manager(Agent agent) 
         {
             agent.MAngryness = Tools.MANAGER_ANGRYNESS_INITIAL;
@@ -18,11 +23,11 @@ namespace SMA_Project_V1
         }
 
         // le comportement de l'agent lors de la simulation
-        public  bool Comportement(FrameEvent evt, Random rand, Agent agent)
+        public  bool Comportement(FrameEvent evt, Random rand, Agent agent, Agent other)
         {
             // visibilité du cube
             //cube.Visible = bcube;
-
+            agent.negociate(agent, other);
             if(agent.MWalkList.Count != 2)
             {
                 marcheAleatoire(rand, agent);

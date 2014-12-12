@@ -7,13 +7,13 @@ namespace SMA_Project_V1
 {
     interface IComportement
     {
-        bool Comportement(FrameEvent evt, Random rand, Agent agent);
+        bool Comportement(FrameEvent evt, Random rand, Agent agent, Agent other);
 
         void evolve(Agent agent);
 
         void regress(Agent agent);
 
-        void remaneWhatYouAre(Agent agent);
+        //void remaneWhatYouAre(Agent agent);
 
         void negociateWithManager(Agent negociator, Agent other);
 

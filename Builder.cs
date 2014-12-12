@@ -8,7 +8,16 @@ namespace SMA_Project_V1
     class Builder : IComportement
     {
 
-        public bool Comportement(FrameEvent evt, Random rand, Agent agent) { return (true); }
+        public bool Comportement(FrameEvent evt, Random rand, Agent agent, Agent other) 
+        {
+            return (true);
+        }
+
+
+        public Builder()
+        {
+
+        }
 
         public Builder(Agent agent) 
         {
