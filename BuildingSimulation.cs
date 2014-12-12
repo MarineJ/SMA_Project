@@ -15,12 +15,13 @@ namespace SMA_Project_V1
         float mWalkSpeed = 200.0f;  // The speed at which the object is moving
         List<Agent> robotList;
         List<Agent> TMProbotList;
+        List<SceneNode> cubeList;
+        List<SceneNode> gridList;
+
         int _AgentsNumber = 0;
         Random rand = new Random();
-        List<Cubi> cubeList;
-        int hauteur = 3000;
-        int Largeur = 3000;
-
+        
+        
         public BuildingSimulation(int agentNumb, float timeSpeed) : base() 
         {
             _AgentsNumber = agentNumb;
@@ -74,24 +75,7 @@ namespace SMA_Project_V1
             groundEnt.SetMaterialName("Examples/Rockwall");
             groundEnt.CastShadows = false;
 
-            // Create knot objects so we can see movement
-            Entity ent = SceneManager.CreateEntity("Knot1", "knot.mesh");
-            SceneNode node = SceneManager.RootSceneNode.CreateChildSceneNode("Knot1Node",
-                new Vector3(0.0f, -10.0f, 25.0f));
-            node.AttachObject(ent);
-            node.Scale(0.1f, 0.1f, 0.1f);
-            //
-            ent = SceneManager.CreateEntity("Knot2", "knot.mesh");
-            node = SceneManager.RootSceneNode.CreateChildSceneNode("Knot2Node",
-                new Vector3(550.0f, -10.0f, 50.0f));
-            node.AttachObject(ent);
-            node.Scale(0.1f, 0.1f, 0.1f);
-            //
-            ent = SceneManager.CreateEntity("Knot3", "knot.mesh");
-            node = SceneManager.RootSceneNode.CreateChildSceneNode("Knot3Node",
-                new Vector3(-100.0f, -10.0f, -200.0f));
-            node.AttachObject(ent);
-            node.Scale(0.1f, 0.1f, 0.1f);
+      
 
             // SKY
 
@@ -115,6 +99,30 @@ namespace SMA_Project_V1
             this.Viewport = this.RenderWindow.AddViewport(this.Camera);
             this.Viewport.BackgroundColour = ColourValue.Black;
             this.Camera.AspectRatio = (float)this.Viewport.ActualWidth / this.Viewport.ActualHeight;
+        }
+
+        protected override void CreateGrid()
+        {
+            gridList = new List<SceneNode>();
+
+            int largeur = 10;
+            int longueur = 10;
+
+            int cote = 10;
+
+
+            for (int i = -largeur; i < largeur; i++)
+            {
+                for (int j = -longueur; j < longueur; j++)
+                {
+                    Entity entgrid = SceneManager.CreateEntity("grid" + i + j, "cube.mesh");
+
+                    SceneNode temp = SceneManager.RootSceneNode.CreateChildSceneNode(new Vector3(cote * i, 0.0f, cote * j));
+                    temp.AttachObject(entgrid);
+                    temp.Scale(Tools.CUBE_SCALE);
+                    gridList.Add(temp);
+                }
+            }
         }
 
         protected override void CreateAgents()
@@ -152,23 +160,32 @@ namespace SMA_Project_V1
 
         protected override void CreateCubes()
         {
-            // cube
-            cubeList = new List<Cubi>();
+            cubeList = new List<SceneNode>();
             for (int i = 0; i < 100; i++)
             {
-                Cubi cub = new Cubi(SceneManager, "Cubi" + i.ToString(), rand.Next(-hauteur / 3, hauteur / 3), rand.Next(-Largeur / 3, Largeur / 3), rand);
-                cubeList.Add(cub);
+                ColourValue col = new ColourValue(1, 0, 0);
+                Entity entcube = SceneManager.CreateEntity("cube" + i, "cube.mesh");
+                int _couleur = rand.Next(1, 6);
+                MaterialPtr mat = MaterialManager.Singleton.Create("CubeMat" + i, ResourceGroupManager.DEFAULT_RESOURCE_GROUP_NAME);
+                TextureUnitState tuisTexture = mat.GetTechnique(0).GetPass(0).CreateTextureUnitState(Tools.color(_couleur));
+
+                entcube.SetMaterialName("CubeMat" + i);
+
+                double angle = rand.NextDouble() * 2 * System.Math.PI;
+                double module = rand.Next(400, 1500);
+
+
+                SceneNode ncube = SceneManager.RootSceneNode.CreateChildSceneNode("nCube" + i, new Vector3((float)(module * System.Math.Cos(angle)), 0.0f, (float)(module * System.Math.Sin(angle))));
+
+                ncube.Scale(0.5f, 0.01f, 0.5f);
+                ncube.AttachObject(entcube);
+
+                cubeList.Add(ncube);
+
             }
 
         }
 
-
-
-
-      /*  protected override void CreateGrille()
-        {
-
-        }*/
 
         protected override void CreateOverlay()
         {
@@ -203,24 +220,100 @@ namespace SMA_Project_V1
         {
             int rayon = 15;
             TMProbotList = new List<Agent>(robotList);
+            int [,] collision = new int[robotList.Count,robotList.Count];
+
+            for (int i = 0 ; i < TMProbotList.Count;i++)
+            {
+                //Collision avec les autres agents
+                for (int j = i+1 ; j < TMProbotList.Count;j++)
+                {
+                    /*if (TMProbotList[i].Equals(TMProbotList[j]))
+                    {
+                        break;
+                    }*/
+
+                    if (System.Math.Abs(TMProbotList[i].node.Position.x - TMProbotList[j].node.Position.x) <= rayon &&
+                        System.Math.Abs(TMProbotList[i].node.Position.z - TMProbotList[j].node.Position.z) <= rayon)
+                    {
+                        collision[i, j] = 1;
+                        collision[j, i] = 1;
+                    }
+                }
+
+                // Collision avec une dalles colorée
+                for (int j = 0; j < cubeList.Count; j++)
+                {
+                    if (System.Math.Abs(cubeList[j].Position.x - TMProbotList[i].node.Position.x) <= rayon &&
+                        System.Math.Abs(cubeList[j].Position.z - TMProbotList[i].node.Position.z) <= rayon &&
+                        !TMProbotList[i].bcube)
+                    {
+                        TMProbotList[i].nodecube.AttachObject(cubeList[j].DetachObject((ushort)0));
+                        TMProbotList[i].bcube = true;
+
+                        cubeList[j].Parent.RemoveChild(cubeList[j]);
+                        cubeList.Remove(cubeList[j]);
+                        j--;
+                    }
+                }
+
+                // marche pas encore 
+
+                // Collision avec Grille
+                foreach (SceneNode grid in gridList)
+                {
+                    if(grid.NumAttachedObjects()==1)
+                    {
+                        if (TMProbotList[i].bcube == true &&
+                            grid.NumAttachedObjects() == 1 &&
+                            System.Math.Abs(grid.Position.x - TMProbotList[i].node.Position.x) <= rayon &&
+                            System.Math.Abs(grid.Position.z - TMProbotList[i].node.Position.z) <= rayon)
+                        {
+                            grid.DetachAllObjects();
+                            grid.AttachObject(TMProbotList[i].nodecube.DetachObject((ushort)0));
+                        }
+                    }
+                    
+                }
+
+
+
+                
+            }
+
+
+
+
+
             do
             {
 
                 int tmp = rand.Next(0, TMProbotList.Count);    
-                List<Agent> TMProbotList2 = new List<Agent>(robotList);
-                TMProbotList[tmp].animation("Walk");
-                do
+                List<Agent> TMProbotList2 = new List<Agent>();
+                for (int i = 0; i < robotList.Count; i++) 
                 {
-                    int tmp2 = rand.Next(0, TMProbotList2.Count);
-                    if (System.Math.Abs(TMProbotList[tmp].Node.Position.x - TMProbotList2[tmp2].Node.Position.x) <= rayon &&
-                        System.Math.Abs(TMProbotList[tmp].Node.Position.z - TMProbotList2[tmp2].Node.Position.z) <= rayon &&
-                        tmp2 != tmp)
-                    {
-                        TMProbotList[tmp].negociate(TMProbotList[tmp], TMProbotList2[tmp2]);
+                    if (collision[tmp, i] == 1)
+                    { 
+                        TMProbotList2.Add(robotList[i]);
                     }
-                    TMProbotList2.Remove(TMProbotList2[tmp2]);
+                }
 
-                } while (TMProbotList2.Count > 0);
+                    TMProbotList[tmp].animation("Walk");
+
+                    if (TMProbotList2.Count != 0)
+                    {
+                        do
+                        {
+                            int tmp2 = rand.Next(0, TMProbotList2.Count);
+                            if (System.Math.Abs(TMProbotList[tmp].Node.Position.x - TMProbotList2[tmp2].Node.Position.x) <= rayon &&
+                                System.Math.Abs(TMProbotList[tmp].Node.Position.z - TMProbotList2[tmp2].Node.Position.z) <= rayon &&
+                                tmp2 != tmp)
+                            {
+                                TMProbotList[tmp].negociate(TMProbotList[tmp], TMProbotList2[tmp2]);
+                            }
+                            TMProbotList2.Remove(TMProbotList2[tmp2]);
+
+                        } while (TMProbotList2.Count > 0);
+                    }
             TMProbotList[tmp].MComportement.Comportement(evt, rand, TMProbotList[tmp]);
             TMProbotList.Remove(TMProbotList[tmp]);
             } while (TMProbotList.Count > 0);

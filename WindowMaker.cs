@@ -56,9 +56,11 @@ namespace SMA_Project_V1
 
     protected virtual void CreateViewport(){}
 
+    protected virtual void CreateGrid(){}
+
     protected virtual void CreateAgents(){}
 
-    protected virtual void CreateCubes() { }
+    protected virtual void CreateCubes(){}
 
     protected virtual void CreateOverlay(){}
         
@@ -130,6 +132,7 @@ namespace SMA_Project_V1
             this.CreateViewport();
             this.CreateInputHandler();
             this.CreateOverlay();
+            this.CreateGrid();
             this.CreateAgents();
             this.CreateCubes();
             base.Disposed += new EventHandler(this.OgreWindow_Disposed);

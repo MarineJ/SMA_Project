@@ -44,10 +44,6 @@
       <HintPath>bin\Debug\MOIS.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
@@ -59,7 +55,6 @@
     <Compile Include="BuildingSimulation.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Cubi.cs" />
     <Compile Include="DefaultInputHandler.cs" />
     <Compile Include="Drag.cs" />
     <Compile Include="Idler.cs" />

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Mogre;
 
 namespace SMA_Project_V1
 {
@@ -38,6 +39,8 @@ namespace SMA_Project_V1
     internal  const int MANAGER_MOTIVATION_INITIAL = 50;
     internal  const int MANAGER_SYMPATHY_INITIAL = 50;
 
+    static internal Vector3 CUBE_SCALE = new Vector3(1.0f, 0.01f, 1.0f);
+
     static internal void updateValue(int diff, int valueToUpdate)
     {
         if (valueToUpdate + diff < 0)
@@ -52,6 +55,35 @@ namespace SMA_Project_V1
         {
             valueToUpdate += diff;
         }
+    }
+
+    static internal String color(int col)
+    {
+        if (col == 1)
+        {
+            return "red.png";
+        }
+        else if (col == 2)
+        {
+            return "blue.png";
+        }
+        else if (col == 3)
+        {
+            return "green.png";
+        }
+        else if (col == 4)
+        {
+            return "pink.png";
+        }
+        else if (col == 5)
+        {
+            return "orange.png";
+        }
+        else
+        {
+            return "Dirt.jpg";
+        }
+
     }
 
     }

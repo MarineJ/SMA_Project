@@ -19,11 +19,11 @@ namespace SMA_Project_V1
         private String name;
         private int mIndexInList = 0;
         private Entity ent;
-        private bool bcube = false;
+        internal bool bcube = false;
         private Entity cube;
-        private SceneNode nodecube;
+        internal SceneNode nodecube;
         private SceneManager mSceneManager;
-        private SceneNode node;
+        internal SceneNode node;
         private IComportement mComportement;
         private int TimeBeforeNextNegociation = 30;
  
@@ -63,7 +63,7 @@ namespace SMA_Project_V1
             // le noeud enfant du robot, celui du cube
             nodecube = node.CreateChildSceneNode(nom + "NodeCube", new Vector3(0.0f, 120.0f, 0.0f));
             // taille du cube
-            nodecube.Scale(0.5f, 0.5f, 0.5f);
+            nodecube.Scale(Tools.CUBE_SCALE);
             // on attache les noeuds à leur modèle
             node.AttachObject(ent);
             nodecube.AttachObject(cube);
