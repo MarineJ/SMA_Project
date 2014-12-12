@@ -11,11 +11,6 @@ namespace SMA_Project_V1
         {
         }
 
-        public Drag()
-        {
-
-        }
-
         public Drag(Agent agent) 
         {
             agent.MAngryness = Tools.DRAG_ANGRYNESS_INITIAL;
@@ -25,10 +20,40 @@ namespace SMA_Project_V1
             agent.MSimpathy = Tools.DRAG_SYMPATHY_INITIAL;
         }
 
-        public bool Comportement(FrameEvent evt, Random rand, Agent agent, Agent other)
+        public bool Comportement(FrameEvent evt, Random rand, Agent agent)
         {
-            agent.negociate(agent, other);
-            return (true);
+            // visibilité du cube
+            //cube.Visible = bcube;;
+            if (agent.MWalkList.Count != 2)
+            {
+                agent.marcheAleatoire(rand, agent);
+            }
+
+            // vitesse de l'agent
+            float move = agent.MWalkSpeed * (evt.timeSinceLastFrame);
+            // distance à parcourir
+            agent.MDistance -= move;
+
+            //distance en ligne droite
+            if (agent.MDistance <= 0.0f)
+            {   // si on est arrivé
+                if (!agent.TurnNextLocation())
+                {
+                    // on attend
+                    agent.MAnimationState = agent.Ent.GetAnimationState("Idle");
+                    return true;
+                }
+            }
+            else
+            {
+                //l'agent bouge
+                agent.Node.Translate(agent.MDirection * move);
+            }
+            //Passe à la frame d'animation suivante
+            agent.MAnimationState.AddTime(evt.timeSinceLastFrame * agent.MWalkSpeed / 20);
+
+            return true;
+
         }
 
         public void evolve(Agent agent)

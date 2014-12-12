@@ -9,11 +9,6 @@ namespace SMA_Project_V1
     {
         public Manager() { }
 
-        public Manager()
-        {
-
-        }
-
         public Manager(Agent agent) 
         {
             agent.MAngryness = Tools.MANAGER_ANGRYNESS_INITIAL;
@@ -24,14 +19,13 @@ namespace SMA_Project_V1
         }
 
         // le comportement de l'agent lors de la simulation
-        public  bool Comportement(FrameEvent evt, Random rand, Agent agent, Agent other)
+        public  bool Comportement(FrameEvent evt, Random rand, Agent agent)
         {
             // visibilité du cube
-            //cube.Visible = bcube;
-            agent.negociate(agent, other);
+            //cube.Visible = bcube;;
             if(agent.MWalkList.Count != 2)
             {
-                marcheAleatoire(rand, agent);
+                agent.marcheAleatoire(rand, agent);
             }
 
             // vitesse de l'agent
@@ -63,14 +57,7 @@ namespace SMA_Project_V1
 
 
         // le manager marche aléatoirement
-        public void marcheAleatoire(Random rand, Agent agent)
-        {
-            agent.MWalkList.Clear();
-
-            double angle = rand.NextDouble() * System.Math.PI;
-            Vector3 tmp = new Vector3((float)(1500 * System.Math.Cos(angle)), agent.Node.Position.y, (float)(1500 * System.Math.Sin(angle)));
-            agent.MWalkList.AddLast(tmp);
-        }
+ 
 
         public  void evolve(Agent agent)
         {

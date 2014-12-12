@@ -128,6 +128,7 @@ namespace SMA_Project_V1
             robotList = new List<Agent>();
             for (int i = 0; i < _AgentsNumber/3; i = i+4)
             {
+                
 
                 Agent builder = new Agent("robot.mesh",SceneManager, "Robot" + i.ToString(), mWalkList, mWalkSpeed, i, new Builder());
                 builder.initiateBuilderValues();
@@ -138,7 +139,7 @@ namespace SMA_Project_V1
                 Agent drag = new Agent("robot.mesh", SceneManager, "Robot" + (i + 2).ToString(), mWalkList, mWalkSpeed, i + 2, new Drag());
                 drag.initiateDragValues();
                 robotList.Add(drag);
-                Agent idler = new Agent("robot.mesh", SceneManager, "Robot" + (i + 3).ToString(), mWalkList, mWalkSpeed, i + 3,new Idler());
+                Agent idler = new Agent("jaiqua.mesh", SceneManager, "Robot" + (i + 3).ToString(), mWalkList, mWalkSpeed, i + 3,new Idler());
                 idler.initiateIdlerValues();
                 robotList.Add(idler);
 
@@ -160,6 +161,14 @@ namespace SMA_Project_V1
             }
 
         }
+
+
+
+
+      /*  protected override void CreateGrille()
+        {
+
+        }*/
 
         protected override void CreateOverlay()
         {
@@ -207,12 +216,12 @@ namespace SMA_Project_V1
                         System.Math.Abs(TMProbotList[tmp].Node.Position.z - TMProbotList2[tmp2].Node.Position.z) <= rayon &&
                         tmp2 != tmp)
                     {
-                        TMProbotList[tmp].MComportement.Comportement(evt, rand, TMProbotList[tmp], TMProbotList2[tmp2]);
+                        TMProbotList[tmp].negociate(TMProbotList[tmp], TMProbotList2[tmp2]);
                     }
                     TMProbotList2.Remove(TMProbotList2[tmp2]);
 
                 } while (TMProbotList2.Count > 0);
-
+            TMProbotList[tmp].MComportement.Comportement(evt, rand, TMProbotList[tmp]);
             TMProbotList.Remove(TMProbotList[tmp]);
             } while (TMProbotList.Count > 0);
 

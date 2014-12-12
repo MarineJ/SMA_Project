@@ -21,39 +21,9 @@ namespace SMA_Project_V1
 
 
         // le comportement de l'agent lors de la simulation
-        public  bool Comportement(FrameEvent evt, Random rand, Agent agent, Agent other)
+        public  bool Comportement(FrameEvent evt, Random rand, Agent agent)
         {
-            // visibilité du cube
-            //cube.Visible = bcube;
-            agent.negociate(agent, other);
-            if(agent.MWalkList.Count != 2)
-            {
-                marcheAleatoire(rand, agent);
-            }
-
-            // vitesse de l'agent
-            float move = agent.MWalkSpeed * (evt.timeSinceLastFrame);
-            // distance à parcourir
-            agent.MDistance -= move;
-
-            //distance en ligne droite
-            if (agent.MDistance <= 0.0f)
-            {   // si on est arrivé
-                if (!agent.TurnNextLocation())
-                {
-                    // on attend
-                    agent.MAnimationState = agent.Ent.GetAnimationState("Idle");
-                    return true;
-                }
-            }
-            else
-            {
-                //l'agent bouge
-                agent.Node.Translate(agent.MDirection * move);
-            }
-            //Passe à la frame d'animation suivante
-            agent.MAnimationState.AddTime(evt.timeSinceLastFrame * agent.MWalkSpeed / 20);
-
+            
             return true;
 
         }

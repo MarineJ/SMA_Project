@@ -37,9 +37,6 @@ namespace SMA_Project_V1
         private int mFavoriteColor;
 
 
-
-       
-
         public Agent(string mesh, SceneManager SceneManager, string nom, LinkedList<Vector3> walklist, float walkspeed, int index, IComportement comportement)
         {
 
@@ -47,36 +44,10 @@ namespace SMA_Project_V1
             // Create the Robot entity
             name = nom;
             mComportement = comportement;
-            if (comportement.GetType() is Builder)
-            {
-                mAngryness = Tools.BUILDER_ANGRYNESS_INITIAL;
-                mFatigue = Tools.BUILDER_FATIGUE_INITIAL;
-                mLeaderShip = Tools.BUILDER_LEADERSHIP_INITIAL;
-                mMotivation = Tools.BUILDER_MOTIVATION_INITIAL;
-                mSimpathy = Tools.BUILDER_SYMPATHY_INITIAL;
-            }
-            else if(comportement.GetType() is Manager){
-                mAngryness = Tools.MANAGER_ANGRYNESS_INITIAL;
-                mFatigue = Tools.MANAGER_FATIGUE_INITIAL;
-                mLeaderShip = Tools.MANAGER_LEADERSHIP_INITIAL;
-                mMotivation = Tools.MANAGER_MOTIVATION_INITIAL;
-                mSimpathy = Tools.MANAGER_SYMPATHY_INITIAL;
-            }
-            else if (comportement.GetType() is Idler)
-            {
-                mAngryness = Tools.IDLER_ANGRYNESS_INITIAL;
-                mFatigue = Tools.IDLER_FATIGUE_INITIAL;
-                mLeaderShip = Tools.IDLER_LEADERSHIP_INITIAL;
-                mMotivation = Tools.IDLER_MOTIVATION_INITIAL;
-                mSimpathy = Tools.IDLER_SYMPATHY_INITIAL;
-            }
-            else{
-                mAngryness = Tools.DRAG_ANGRYNESS_INITIAL;
-                mFatigue = Tools.DRAG_FATIGUE_INITIAL;
-                mLeaderShip = Tools.DRAG_LEADERSHIP_INITIAL;
-                mMotivation = Tools.DRAG_MOTIVATION_INITIAL;
-                mSimpathy = Tools.DRAG_SYMPATHY_INITIAL;
-            }
+            if (comportement.GetType() is Builder) { initiateBuilderValues();}
+            else if(comportement.GetType() is Manager){ initiateManagerValues(); }
+            else if (comportement.GetType() is Idler) { initiateIdlerValues();}
+            else{ initiateDragValues(); }
 
             mIndexInList = index;
             mSceneManager = SceneManager;
@@ -85,10 +56,12 @@ namespace SMA_Project_V1
             // la forme du cube
             cube = SceneManager.CreateEntity("cube" + nom, "cube.mesh");
             //  Robot SceneNode
-            node = SceneManager.RootSceneNode.CreateChildSceneNode(nom + "Node", new Vector3(0.0f, 0.0f, 0.25f));
+            Random rand = new Random();
+            double angle = 2*rand.NextDouble()*System.Math.PI;
+            int module = rand.Next(0,1500);
+            node = SceneManager.RootSceneNode.CreateChildSceneNode(nom + "Node",new Vector3((float)(module*System.Math.Cos(angle)),0.0f,(float)(module*System.Math.Sin(angle))));
             // le noeud enfant du robot, celui du cube
             nodecube = node.CreateChildSceneNode(nom + "NodeCube", new Vector3(0.0f, 120.0f, 0.0f));
-
             // taille du cube
             nodecube.Scale(0.5f, 0.5f, 0.5f);
             // on attache les noeuds à leur modèle
@@ -103,6 +76,9 @@ namespace SMA_Project_V1
             mWalkSpeed = walkspeed;
         }
 
+
+
+
         // attive une animation en boucle
         public  void animation(string typeAnimation)
         {
@@ -110,6 +86,15 @@ namespace SMA_Project_V1
             mAnimationState = ent.GetAnimationState(typeAnimation);
             mAnimationState.Loop = true;
             mAnimationState.Enabled = true;
+        }
+
+        public void marcheAleatoire(Random rand, Agent agent)
+        {
+            agent.MWalkList.Clear();
+
+            double angle = rand.NextDouble() * System.Math.PI;
+            Vector3 tmp = new Vector3((float)(1500 * System.Math.Cos(angle)), agent.Node.Position.y, (float)(1500 * System.Math.Sin(angle)));
+            agent.MWalkList.AddLast(tmp);
         }
 
         //passe au suivant
@@ -184,7 +169,49 @@ namespace SMA_Project_V1
                 agent.MComportement.negociateWithDrag(agent, other);
             }
         }
-    
+
+
+
+        #region initialisation
+        public void initiateBuilderValues()
+        {
+            this.MAngryness = Tools.BUILDER_ANGRYNESS_INITIAL;
+            this.MFatigue = Tools.BUILDER_FATIGUE_INITIAL;
+            this.MLeaderShip = Tools.BUILDER_LEADERSHIP_INITIAL;
+            this.MMotivation = Tools.BUILDER_MOTIVATION_INITIAL;
+            this.MSimpathy = Tools.BUILDER_SYMPATHY_INITIAL;
+        }
+
+        public void initiateManagerValues()
+        {
+            this.MAngryness = Tools.MANAGER_ANGRYNESS_INITIAL;
+            this.MFatigue = Tools.MANAGER_FATIGUE_INITIAL;
+            this.MLeaderShip = Tools.MANAGER_LEADERSHIP_INITIAL;
+            this.MMotivation = Tools.MANAGER_MOTIVATION_INITIAL;
+            this.MSimpathy = Tools.MANAGER_SYMPATHY_INITIAL;
+        }
+
+        public void initiateIdlerValues()
+        {
+
+            this.MAngryness = Tools.IDLER_ANGRYNESS_INITIAL;
+            this.MFatigue = Tools.IDLER_FATIGUE_INITIAL;
+            this.MLeaderShip = Tools.IDLER_LEADERSHIP_INITIAL;
+            this.MMotivation = Tools.IDLER_MOTIVATION_INITIAL;
+            this.MSimpathy = Tools.IDLER_SYMPATHY_INITIAL;
+
+        }
+
+        public void initiateDragValues()
+        {
+            this.MAngryness = Tools.DRAG_ANGRYNESS_INITIAL;
+            this.MFatigue = Tools.DRAG_FATIGUE_INITIAL;
+            this.MLeaderShip = Tools.DRAG_LEADERSHIP_INITIAL;
+            this.MMotivation = Tools.DRAG_MOTIVATION_INITIAL;
+            this.MSimpathy = Tools.DRAG_SYMPATHY_INITIAL;
+        }
+
+        #endregion
 
 
 
