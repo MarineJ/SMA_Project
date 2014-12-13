@@ -39,7 +39,7 @@ namespace SMA_Project_V1
     internal  const int MANAGER_MOTIVATION_INITIAL = 50;
     internal  const int MANAGER_SYMPATHY_INITIAL = 50;
 
-    static internal Vector3 CUBE_SCALE = new Vector3(1.0f, 0.01f, 1.0f);
+    static internal Vector3 CUBE_SCALE = new Vector3(0.5f, 0.01f, 0.5f);
 
     static internal void updateValue(int diff, int valueToUpdate)
     {

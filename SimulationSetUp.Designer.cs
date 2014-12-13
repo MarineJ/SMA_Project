@@ -49,7 +49,7 @@
             this.AgentsTrackBar.Maximum = 100;
             this.AgentsTrackBar.Name = "AgentsTrackBar";
             this.AgentsTrackBar.Size = new System.Drawing.Size(330, 45);
-            this.AgentsTrackBar.TabIndex = 0;
+            this.AgentsTrackBar.TabIndex = 4;
             this.AgentsTrackBar.TickFrequency = 10;
             this.AgentsTrackBar.Value = 30;
             this.AgentsTrackBar.Scroll += new System.EventHandler(this.AgentsTrackBar_Scroll);
@@ -88,10 +88,11 @@
             // 
             // button1
             // 
+            this.button1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.button1.Location = new System.Drawing.Point(179, 429);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 4;
+            this.button1.TabIndex = 0;
             this.button1.Text = "Run";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);

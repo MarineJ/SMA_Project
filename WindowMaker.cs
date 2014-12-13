@@ -7,17 +7,21 @@ using System.Windows.Forms;
 
 namespace SMA_Project_V1
 {
-    public class WindowMaker : Form
+    public partial class WindowMaker : Form
     {
 
    // Fields
    // private IContainer components;
-    private Camera mCamera;
+    //private Camera mCamera;
     private Root mRoot;
     private SceneManager mSceneMgr;
     private Viewport mViewport;
-    private RenderWindow mWindow;
+    internal RenderWindow mWindow;
     private Overlay mOverlay;
+
+    protected Camera mCamera;
+    internal CameraMan mCameraMan;
+    protected bool mShutDown = false;
 
 
     // Events
@@ -26,6 +30,7 @@ namespace SMA_Project_V1
     // Methods
     public WindowMaker()
     {
+        InitializeComponent();
         this.InitializeComponent();
         this.Size = new Size(900, 700);
         Disposed += new EventHandler(OgreForm_Disposed);
@@ -63,10 +68,12 @@ namespace SMA_Project_V1
     protected virtual void CreateCubes(){}
 
     protected virtual void CreateOverlay(){}
+
+    
         
     protected override void Dispose(bool disposing)
     {
-    /*    if (disposing && (this.components != null))
+        /*if (disposing && (this.components != null))
         {
             this.components.Dispose();
         }
@@ -100,6 +107,7 @@ namespace SMA_Project_V1
 
     private void InitializeComponent()
     {
+        
         base.SuspendLayout();
         base.AutoScaleDimensions = new SizeF(6f, 13f);
         base.AutoScaleMode = AutoScaleMode.Font;
@@ -135,8 +143,10 @@ namespace SMA_Project_V1
             this.CreateGrid();
             this.CreateAgents();
             this.CreateCubes();
+            InitializeInput();
             base.Disposed += new EventHandler(this.OgreWindow_Disposed);
             this.OnSceneCreating();
+            
         }
         finally
         {
@@ -258,6 +268,48 @@ namespace SMA_Project_V1
 
     // Nested Types
     public delegate void SceneEventHandler(WindowMaker win);
+
+          
+    protected virtual void CreateFrameListeners()
+    {
+        mRoot.FrameRenderingQueued += new FrameListener.FrameRenderingQueuedHandler(OnFrameRenderingQueued);
+    }
+
+
+    protected virtual bool OnFrameRenderingQueued(FrameEvent evt)
+    {
+        if (mWindow.IsClosed)
+            return false;
+
+        if (mShutDown)
+            return false;
+
+        try
+        {
+            ProcessInput();
+
+            //UpdateScene(evt);
+
+            mCameraMan.UpdateCamera(evt.timeSinceLastFrame);
+
+            //mDebugOverlay.Update(evt.timeSinceLastFrame);
+
+            return true;
+        }
+        catch (ShutdownException)
+        {
+            mShutDown = true;
+            return false;
+        }
+    }
+
+    
+
+
+    protected void Shutdown()
+    {
+        throw new ShutdownException();
+    }
     
     }
 }

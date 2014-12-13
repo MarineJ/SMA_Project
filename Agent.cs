@@ -53,8 +53,7 @@ namespace SMA_Project_V1
             mSceneManager = SceneManager;
             // la forme du robot
             ent = SceneManager.CreateEntity(nom, mesh);
-            // la forme du cube
-            cube = SceneManager.CreateEntity("cube" + nom, "cube.mesh");
+           
             //  Robot SceneNode
             Random rand = new Random();
             double angle = 2*rand.NextDouble()*System.Math.PI;
@@ -66,7 +65,7 @@ namespace SMA_Project_V1
             nodecube.Scale(Tools.CUBE_SCALE);
             // on attache les noeuds à leur modèle
             node.AttachObject(ent);
-            nodecube.AttachObject(cube);
+            
 
             //ent = SceneManager.GetEntity(nom);
             //node = SceneManager.GetSceneNode(nom+"Node");
@@ -91,9 +90,9 @@ namespace SMA_Project_V1
         public void marcheAleatoire(Random rand, Agent agent)
         {
             agent.MWalkList.Clear();
-
-            double angle = rand.NextDouble() * System.Math.PI;
-            Vector3 tmp = new Vector3((float)(1500 * System.Math.Cos(angle)), agent.Node.Position.y, (float)(1500 * System.Math.Sin(angle)));
+            double module = rand.Next(0, 1500);
+            double angle = 2*rand.NextDouble() * System.Math.PI;
+            Vector3 tmp = new Vector3((float)(module * System.Math.Cos(angle)), agent.Node.Position.y, (float)(module * System.Math.Sin(angle)));
             agent.MWalkList.AddLast(tmp);
         }
 

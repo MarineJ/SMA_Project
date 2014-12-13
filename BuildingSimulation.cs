@@ -5,14 +5,14 @@ using Mogre;
 
 namespace SMA_Project_V1
 {
-    class BuildingSimulation : WindowMaker
+    class  BuildingSimulation : WindowMaker
     {
         Vector3 mDirection = Vector3.ZERO;   // The direction the object is moving
         Vector3 mDestination = Vector3.ZERO;
         float _TimeSpeed = 1;
         // The destination the object is moving towards
         LinkedList<Vector3> mWalkList = null; // A doubly linked containing the waypoints
-        float mWalkSpeed = 200.0f;  // The speed at which the object is moving
+        float mWalkSpeed = 150.0f;  // The speed at which the object is moving
         List<Agent> robotList;
         List<Agent> TMProbotList;
         List<SceneNode> cubeList;
@@ -20,6 +20,8 @@ namespace SMA_Project_V1
 
         int _AgentsNumber = 0;
         Random rand = new Random();
+
+        
         
         
         public BuildingSimulation(int agentNumb, float timeSpeed) : base() 
@@ -35,7 +37,7 @@ namespace SMA_Project_V1
             Camera.Position = new Vector3(0, 100, 500);
             Camera.LookAt(Vector3.ZERO);
             Camera.NearClipDistance = 5;
-            //mCameraMan = new CameraMan(mCamera);
+            mCameraMan = new CameraMan(mCamera);
         }
 
         protected override void CreateRenderWindow(IntPtr handle)
@@ -105,19 +107,19 @@ namespace SMA_Project_V1
         {
             gridList = new List<SceneNode>();
 
-            int largeur = 10;
-            int longueur = 10;
+            int largeur = 200;
+            int longueur = 200;
 
-            int cote = 10;
+            int cote = 100;
 
 
-            for (int i = -largeur; i < largeur; i++)
+            for (int i = -largeur; i < largeur; i += cote)
             {
-                for (int j = -longueur; j < longueur; j++)
+                for (int j = -longueur; j < longueur; j += cote)
                 {
-                    Entity entgrid = SceneManager.CreateEntity("grid" + i + j, "cube.mesh");
+                    Entity entgrid = SceneManager.CreateEntity("grid" + i.ToString() + j.ToString(), "cube.mesh");
 
-                    SceneNode temp = SceneManager.RootSceneNode.CreateChildSceneNode(new Vector3(cote * i, 0.0f, cote * j));
+                    SceneNode temp = SceneManager.RootSceneNode.CreateChildSceneNode(new Vector3( i, 0.0f, j));
                     temp.AttachObject(entgrid);
                     temp.Scale(Tools.CUBE_SCALE);
                     gridList.Add(temp);
@@ -129,25 +131,25 @@ namespace SMA_Project_V1
         {
             // Create the walking list
             mWalkList = new LinkedList<Vector3>();
-            mWalkList.AddLast(new Vector3(550.0f, 0.0f, 50.0f));
+           /* mWalkList.AddLast(new Vector3(550.0f, 0.0f, 50.0f));
             mWalkList.AddLast(new Vector3(-100.0f, 0.0f, -200.0f));
-            mWalkList.AddLast(new Vector3(0.0f, 0.0f, 25.0f));
+            mWalkList.AddLast(new Vector3(0.0f, 0.0f, 25.0f));*/
 
             robotList = new List<Agent>();
             for (int i = 0; i < _AgentsNumber/3; i = i+4)
             {
                 
 
-                Agent builder = new Agent("robot.mesh",SceneManager, "Robot" + i.ToString(), mWalkList, mWalkSpeed, i, new Builder());
+                Agent builder = new Agent("robot.mesh",SceneManager, "builder" + i.ToString(), mWalkList, mWalkSpeed, i, new Builder());
                 builder.initiateBuilderValues();
                 robotList.Add(builder);
-                Agent manager = new Agent("ninja.mesh", SceneManager, "Robot" + (i + 1).ToString(), mWalkList, mWalkSpeed, i + 1, new Manager());
+                Agent manager = new Agent("ninja.mesh", SceneManager, "manager" + (i + 1).ToString(), mWalkList, mWalkSpeed, i + 1, new Manager());
                 manager.initiateManagerValues();
                 robotList.Add(manager);
-                Agent drag = new Agent("robot.mesh", SceneManager, "Robot" + (i + 2).ToString(), mWalkList, mWalkSpeed, i + 2, new Drag());
+                Agent drag = new Agent("robot.mesh", SceneManager, "drag" + (i + 2).ToString(), mWalkList, mWalkSpeed, i + 2, new Drag());
                 drag.initiateDragValues();
                 robotList.Add(drag);
-                Agent idler = new Agent("jaiqua.mesh", SceneManager, "Robot" + (i + 3).ToString(), mWalkList, mWalkSpeed, i + 3,new Idler());
+                Agent idler = new Agent("jaiqua.mesh", SceneManager, "idler" + (i + 3).ToString(), mWalkList, mWalkSpeed, i + 3,new Idler());
                 idler.initiateIdlerValues();
                 robotList.Add(idler);
 
@@ -185,8 +187,7 @@ namespace SMA_Project_V1
             }
 
         }
-
-
+        
         protected override void CreateOverlay()
         {
             this.Overlay = OverlayManager.Singleton.Create("TestOverlay");
@@ -210,7 +211,10 @@ namespace SMA_Project_V1
         protected override void CreateInputHandler()
         {
 
-            new DefaultInputHandler(this);
+            //new DefaultInputHandler(this);
+
+            base.CreateFrameListeners();
+
             this.Root.FrameStarted += new FrameListener.FrameStartedHandler(FrameStarted);
 
 
@@ -259,17 +263,26 @@ namespace SMA_Project_V1
                 // marche pas encore 
 
                 // Collision avec Grille
-                foreach (SceneNode grid in gridList)
+                for (int j = 0; j < gridList.Count; j++)
                 {
-                    if(grid.NumAttachedObjects()==1)
+                    if (System.Math.Abs(gridList[j].Position.x - TMProbotList[i].node.Position.x) <= rayon &&
+                            System.Math.Abs(gridList[j].Position.z - TMProbotList[i].node.Position.z) <= rayon)
                     {
                         if (TMProbotList[i].bcube == true &&
-                            grid.NumAttachedObjects() == 1 &&
-                            System.Math.Abs(grid.Position.x - TMProbotList[i].node.Position.x) <= rayon &&
-                            System.Math.Abs(grid.Position.z - TMProbotList[i].node.Position.z) <= rayon)
+                            gridList[j].NumAttachedObjects() == 1 &&
+                            System.Math.Abs(gridList[j].Position.x - TMProbotList[i].node.Position.x) <= rayon &&
+                            System.Math.Abs(gridList[j].Position.z - TMProbotList[i].node.Position.z) <= rayon)
                         {
-                            grid.DetachAllObjects();
-                            grid.AttachObject(TMProbotList[i].nodecube.DetachObject((ushort)0));
+                            if (TMProbotList[i].nodecube.NumAttachedObjects() > (ushort)0)
+                            {
+                                gridList[j].DetachAllObjects();
+                                int test = TMProbotList[i].nodecube.NumAttachedObjects();
+                                gridList[j].AttachObject(TMProbotList[i].nodecube.DetachObject((ushort)0));
+                                //gridList[j].Scale(Tools.CUBE_SCALE);
+                                gridList.Remove(gridList[j]);
+                                j--;
+                                break;
+                            }
                         }
                     }
                     
@@ -287,7 +300,7 @@ namespace SMA_Project_V1
             do
             {
 
-                int tmp = rand.Next(0, TMProbotList.Count);    
+                int tmp = rand.Next(0, TMProbotList.Count-1);    
                 List<Agent> TMProbotList2 = new List<Agent>();
                 for (int i = 0; i < robotList.Count; i++) 
                 {
@@ -320,5 +333,7 @@ namespace SMA_Project_V1
 
             return true;
         }
+
+        
     }
 }

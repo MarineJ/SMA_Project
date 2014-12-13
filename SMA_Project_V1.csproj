@@ -55,7 +55,10 @@
     <Compile Include="BuildingSimulation.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DefaultInputHandler.cs" />
+    <Compile Include="WindowMaker.input.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CameraMan.cs" />
     <Compile Include="Drag.cs" />
     <Compile Include="Idler.cs" />
     <Compile Include="IComportement.cs" />
