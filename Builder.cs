@@ -61,12 +61,42 @@ namespace SMA_Project_V1
 
         public void evolve(Agent agent)
         {
+            // Transformation de l'agent
             agent.MComportement = new Manager(agent);
+            agent.Node.DetachAllObjects();
+            agent.Ent = agent.MSceneManager.CreateEntity(Tools.MANAGER_MESH);
+            agent.Node.AttachObject(agent.Ent);
+
+            //si l'agent possédait un cube, il le depose.
+            if (agent.Nodecube.NumAttachedObjects() > 0)
+            {
+                agent.Bcube = false;
+                SceneNode temp = agent.MSceneManager.RootSceneNode.CreateChildSceneNode(agent.Node.Position);
+                temp.AttachObject(agent.Nodecube.DetachObject((ushort)0));
+                temp.Scale(Tools.CUBE_SCALE);
+                
+
+            }
+
         }
 
         public void regress(Agent agent)
         {
             agent.MComportement = new Idler(agent);
+            agent.Node.DetachAllObjects();
+            agent.Ent = agent.MSceneManager.CreateEntity(Tools.IDLER_MESH);
+            agent.Node.AttachObject(agent.Ent);
+
+            //si l'agent possédait un cube, il le depose.
+            if (agent.Nodecube.NumAttachedObjects() > 0)
+            {
+                agent.Bcube = false;
+                SceneNode temp = agent.MSceneManager.RootSceneNode.CreateChildSceneNode(agent.Node.Position);
+                temp.AttachObject(agent.Nodecube.DetachObject((ushort)0));
+                temp.Scale(Tools.CUBE_SCALE);
+
+
+            }
         }
 
         //

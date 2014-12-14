@@ -32,11 +32,17 @@ namespace SMA_Project_V1
         public void evolve(Agent agent)
         {
             agent.MComportement = new Builder(agent);
+            agent.Node.DetachAllObjects();
+            agent.Ent = agent.MSceneManager.CreateEntity(Tools.BUILDER_MESH);
+            agent.Node.AttachObject(agent.Ent);
         }
 
         public void regress(Agent agent)
         {
             agent.MComportement = new Drag(agent);
+            agent.Node.DetachAllObjects();
+            agent.Ent = agent.MSceneManager.CreateEntity(Tools.DRAG_MESH);
+            agent.Node.AttachObject(agent.Ent);
         }
 
 

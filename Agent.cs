@@ -19,11 +19,11 @@ namespace SMA_Project_V1
         private String name;
         private int mIndexInList = 0;
         private Entity ent;
-        internal bool bcube = false;
+        private bool bcube = false;
         private Entity cube;
-        internal SceneNode nodecube;
+        private SceneNode nodecube;
         private SceneManager mSceneManager;
-        internal SceneNode node;
+        private SceneNode node;
         private IComportement mComportement;
         private int TimeBeforeNextNegociation = 30;
  
@@ -210,6 +210,13 @@ namespace SMA_Project_V1
             this.MSimpathy = Tools.DRAG_SYMPATHY_INITIAL;
         }
 
+        public void InitiatePosition(Random rand) 
+        {
+            double angle = 2 * rand.NextDouble() * System.Math.PI;
+            int module = rand.Next(0, 1500);
+            node.SetPosition( (float)(module * System.Math.Cos(angle)), 0.0f, (float)(module * System.Math.Sin(angle)));
+        }
+
         #endregion
 
 
@@ -310,6 +317,19 @@ namespace SMA_Project_V1
             set { cube = value; }
         }
 
+
+        public SceneNode Nodecube
+        {
+            get { return nodecube; }
+            set { nodecube = value; }
+        }
+
+        public bool Bcube
+        {
+            get { return bcube; }
+            set { bcube = value; }
+        }
+        
         public SceneManager MSceneManager
         {
             get { return mSceneManager; }

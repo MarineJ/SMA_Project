@@ -13,10 +13,10 @@ namespace SMA_Project_V1
         // The destination the object is moving towards
         LinkedList<Vector3> mWalkList = null; // A doubly linked containing the waypoints
         float mWalkSpeed = 150.0f;  // The speed at which the object is moving
-        List<Agent> robotList;
-        List<Agent> TMProbotList;
-        List<SceneNode> cubeList;
-        List<SceneNode> gridList;
+        internal List<Agent> robotList;
+        internal List<Agent> TMProbotList;
+        public List<SceneNode> cubeList;
+        internal List<SceneNode> gridList;
 
         int _AgentsNumber = 0;
         Random rand = new Random();
@@ -136,7 +136,7 @@ namespace SMA_Project_V1
             mWalkList.AddLast(new Vector3(0.0f, 0.0f, 25.0f));*/
 
             robotList = new List<Agent>();
-            for (int i = 0; i < _AgentsNumber/3; i = i+4)
+           /* for (int i = 0; i < _AgentsNumber/3; i = i+4)
             {
                 
 
@@ -153,7 +153,89 @@ namespace SMA_Project_V1
                 idler.initiateIdlerValues();
                 robotList.Add(idler);
 
-            }
+            }*/
+            for (int i = 0; i < _AgentsNumber / 3; i=i+4)
+            {
+                bool condition = true;
+                int rayon = 120;
+                Agent builder = new Agent(Tools.BUILDER_MESH, SceneManager, "builder" + i.ToString(), mWalkList, mWalkSpeed, i, new Builder());
+                Agent manager = new Agent(Tools.MANAGER_MESH, SceneManager, "manager" + (i).ToString(), mWalkList, mWalkSpeed, i + 1, new Manager());
+                Agent drag = new Agent(Tools.DRAG_MESH, SceneManager, "drag" + (i).ToString(), mWalkList, mWalkSpeed, i + 2, new Drag());
+                Agent idler = new Agent(Tools.IDLER_MESH, SceneManager, "idler" + (i).ToString(), mWalkList, mWalkSpeed, i + 3, new Idler());
+
+                builder.initiateBuilderValues();
+                manager.initiateManagerValues();
+                drag.initiateDragValues();
+                idler.initiateIdlerValues();
+
+                //builder
+                do
+                {
+                    condition = true;
+                    builder.InitiatePosition(rand);
+                    foreach (Agent age in robotList)
+                    {
+                        if (System.Math.Abs(age.Node.Position.x - builder.Node.Position.x) <= rayon &&
+                            System.Math.Abs(age.Node.Position.y - builder.Node.Position.y) <= rayon)
+                        {
+                            condition = false; ;
+                        }
+                    }
+                } while (condition == false);
+                robotList.Add(builder);
+
+                //manager
+                do
+                {
+                    condition = true;
+                    manager.InitiatePosition(rand);
+                    foreach (Agent age in robotList)
+                    {
+                        if (System.Math.Abs(age.Node.Position.x - manager.Node.Position.x) <= rayon &&
+                            System.Math.Abs(age.Node.Position.y - manager.Node.Position.y) <= rayon)
+                        {
+                            condition = false; ;
+                        }
+                    }
+                } while (condition == false);
+                robotList.Add(manager);
+
+                //drag
+                do
+                {
+                    condition = true;
+                    drag.InitiatePosition(rand);
+                    foreach (Agent age in robotList)
+                    {
+                        if (System.Math.Abs(age.Node.Position.x - drag.Node.Position.x) <= rayon &&
+                            System.Math.Abs(age.Node.Position.y - drag.Node.Position.y) <= rayon)
+                        {
+                            condition = false; ;
+                        }
+                    }
+                } while (condition == false);
+                robotList.Add(drag);
+
+                //idler
+                do
+                {
+                    condition = true;
+                    idler.InitiatePosition(rand);
+                    foreach (Agent age in robotList)
+                    {
+                        if (System.Math.Abs(age.Node.Position.x - idler.Node.Position.x) <= rayon &&
+                            System.Math.Abs(age.Node.Position.y - idler.Node.Position.y) <= rayon)
+                        {
+                            condition = false; ;
+                        }
+                    }
+                } while (condition == false);
+                robotList.Add(idler);
+
+
+
+            } 
+
 
             //Console.WriteLine("passer");
 
@@ -236,56 +318,61 @@ namespace SMA_Project_V1
                         break;
                     }*/
 
-                    if (System.Math.Abs(TMProbotList[i].node.Position.x - TMProbotList[j].node.Position.x) <= rayon &&
-                        System.Math.Abs(TMProbotList[i].node.Position.z - TMProbotList[j].node.Position.z) <= rayon)
+                    if (System.Math.Abs(TMProbotList[i].Node.Position.x - TMProbotList[j].Node.Position.x) <= rayon &&
+                        System.Math.Abs(TMProbotList[i].Node.Position.z - TMProbotList[j].Node.Position.z) <= rayon)
                     {
                         collision[i, j] = 1;
                         collision[j, i] = 1;
                     }
                 }
 
-                // Collision avec une dalles colorée
-                for (int j = 0; j < cubeList.Count; j++)
+                // si l'agent est un constructeur
+                if (TMProbotList[i].MComportement.ToString() == typeof(Builder).ToString()) 
                 {
-                    if (System.Math.Abs(cubeList[j].Position.x - TMProbotList[i].node.Position.x) <= rayon &&
-                        System.Math.Abs(cubeList[j].Position.z - TMProbotList[i].node.Position.z) <= rayon &&
-                        !TMProbotList[i].bcube)
+                    // Collision avec une dalles colorée
+                    for (int j = 0; j < cubeList.Count; j++)
                     {
-                        TMProbotList[i].nodecube.AttachObject(cubeList[j].DetachObject((ushort)0));
-                        TMProbotList[i].bcube = true;
-
-                        cubeList[j].Parent.RemoveChild(cubeList[j]);
-                        cubeList.Remove(cubeList[j]);
-                        j--;
-                    }
-                }
-
-                // marche pas encore 
-
-                // Collision avec Grille
-                for (int j = 0; j < gridList.Count; j++)
-                {
-                    if (System.Math.Abs(gridList[j].Position.x - TMProbotList[i].node.Position.x) <= rayon &&
-                            System.Math.Abs(gridList[j].Position.z - TMProbotList[i].node.Position.z) <= rayon)
-                    {
-                        if (TMProbotList[i].bcube == true &&
-                            gridList[j].NumAttachedObjects() == 1 &&
-                            System.Math.Abs(gridList[j].Position.x - TMProbotList[i].node.Position.x) <= rayon &&
-                            System.Math.Abs(gridList[j].Position.z - TMProbotList[i].node.Position.z) <= rayon)
+                        if (System.Math.Abs(cubeList[j].Position.x - TMProbotList[i].Node.Position.x) <= rayon &&
+                            System.Math.Abs(cubeList[j].Position.z - TMProbotList[i].Node.Position.z) <= rayon &&
+                            !TMProbotList[i].Bcube /*&& TMProbotList[i].GetType() == typeof( Builder)*/)
                         {
-                            if (TMProbotList[i].nodecube.NumAttachedObjects() > (ushort)0)
-                            {
-                                gridList[j].DetachAllObjects();
-                                int test = TMProbotList[i].nodecube.NumAttachedObjects();
-                                gridList[j].AttachObject(TMProbotList[i].nodecube.DetachObject((ushort)0));
-                                //gridList[j].Scale(Tools.CUBE_SCALE);
-                                gridList.Remove(gridList[j]);
-                                j--;
-                                break;
-                            }
+                            TMProbotList[i].Nodecube.AttachObject(cubeList[j].DetachObject((ushort)0));
+                            TMProbotList[i].Bcube = true;
+
+                            cubeList[j].Parent.RemoveChild(cubeList[j]);
+                            cubeList.Remove(cubeList[j]);
+                            j--;
                         }
                     }
+
+
                     
+
+                    // Collision avec Grille
+                    for (int j = 0; j < gridList.Count; j++)
+                    {
+                        if (System.Math.Abs(gridList[j].Position.x - TMProbotList[i].Node.Position.x) <= rayon &&
+                                System.Math.Abs(gridList[j].Position.z - TMProbotList[i].Node.Position.z) <= rayon)
+                        {
+                            if (TMProbotList[i].Bcube == true &&
+                                gridList[j].NumAttachedObjects() == 1 &&
+                                System.Math.Abs(gridList[j].Position.x - TMProbotList[i].Node.Position.x) <= rayon &&
+                                System.Math.Abs(gridList[j].Position.z - TMProbotList[i].Node.Position.z) <= rayon)
+                            {
+                                if (TMProbotList[i].Nodecube.NumAttachedObjects() > (ushort)0)
+                                {
+                                    gridList[j].DetachAllObjects();
+                                    int test = TMProbotList[i].Nodecube.NumAttachedObjects();
+                                    gridList[j].AttachObject(TMProbotList[i].Nodecube.DetachObject((ushort)0));
+                                    //gridList[j].Scale(Tools.CUBE_SCALE);
+                                    gridList.Remove(gridList[j]);
+                                    j--;
+                                    break;
+                                }
+                            }
+                        }
+
+                    }
                 }
 
 
@@ -296,11 +383,13 @@ namespace SMA_Project_V1
 
 
 
-
+            //debut des interactions aléatoires
             do
             {
 
-                int tmp = rand.Next(0, TMProbotList.Count-1);    
+                int tmp = rand.Next(0, TMProbotList.Count-1); // chosie aleatoirement un index de la liste
+                
+                // Liste les agents aux alentoures
                 List<Agent> TMProbotList2 = new List<Agent>();
                 for (int i = 0; i < robotList.Count; i++) 
                 {
@@ -312,23 +401,26 @@ namespace SMA_Project_V1
 
                     TMProbotList[tmp].animation("Walk");
 
-                    if (TMProbotList2.Count != 0)
+                // si un agent est dans le coins
+                if (TMProbotList2.Count != 0)
+                {
+                    // Interaction aléatoire
+                    do
                     {
-                        do
-                        {
-                            int tmp2 = rand.Next(0, TMProbotList2.Count);
-                            if (System.Math.Abs(TMProbotList[tmp].Node.Position.x - TMProbotList2[tmp2].Node.Position.x) <= rayon &&
-                                System.Math.Abs(TMProbotList[tmp].Node.Position.z - TMProbotList2[tmp2].Node.Position.z) <= rayon &&
-                                tmp2 != tmp)
-                            {
-                                TMProbotList[tmp].negociate(TMProbotList[tmp], TMProbotList2[tmp2]);
-                            }
-                            TMProbotList2.Remove(TMProbotList2[tmp2]);
+                        int tmp2 = rand.Next(0, TMProbotList2.Count);
+                        /*if (System.Math.Abs(TMProbotList[tmp].Node.Position.x - TMProbotList2[tmp2].Node.Position.x) <= rayon &&
+                            System.Math.Abs(TMProbotList[tmp].Node.Position.z - TMProbotList2[tmp2].Node.Position.z) <= rayon &&
+                            tmp2 != tmp)
+                        {*/
+                            TMProbotList[tmp].negociate(TMProbotList[tmp], TMProbotList2[tmp2]);
+                        //}
+                        TMProbotList2.Remove(TMProbotList2[tmp2]);
 
-                        } while (TMProbotList2.Count > 0);
-                    }
-            TMProbotList[tmp].MComportement.Comportement(evt, rand, TMProbotList[tmp]);
-            TMProbotList.Remove(TMProbotList[tmp]);
+                    } while (TMProbotList2.Count > 0);
+                }
+
+                TMProbotList[tmp].MComportement.Comportement(evt, rand, TMProbotList[tmp]);
+                TMProbotList.Remove(TMProbotList[tmp]);
             } while (TMProbotList.Count > 0);
 
             return true;

@@ -59,6 +59,9 @@ namespace SMA_Project_V1
         public void evolve(Agent agent)
         {
             agent.MComportement = new Idler(agent);
+            agent.Node.DetachAllObjects();
+            agent.Ent = agent.MSceneManager.CreateEntity(Tools.IDLER_MESH);
+            agent.Node.AttachObject(agent.Ent);
         }
 
         public void regress(Agent agent)

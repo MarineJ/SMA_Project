@@ -41,6 +41,12 @@ namespace SMA_Project_V1
 
     static internal Vector3 CUBE_SCALE = new Vector3(0.5f, 0.01f, 0.5f);
 
+
+    internal const string BUILDER_MESH = "robot.mesh";
+    internal const string DRAG_MESH = "jaiqua.mesh";
+    internal const string IDLER_MESH = "robot.mesh";
+    internal const string MANAGER_MESH = "ninja.mesh";
+
     static internal void updateValue(int diff, int valueToUpdate)
     {
         if (valueToUpdate + diff < 0)
