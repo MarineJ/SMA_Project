@@ -74,6 +74,7 @@ namespace SMA_Project_V1
                 SceneNode temp = agent.MSceneManager.RootSceneNode.CreateChildSceneNode(agent.Node.Position);
                 temp.AttachObject(agent.Nodecube.DetachObject((ushort)0));
                 temp.Scale(Tools.CUBE_SCALE);
+                BuildingSimulation.cubeList.Add(temp);
                 
 
             }
@@ -94,7 +95,7 @@ namespace SMA_Project_V1
                 SceneNode temp = agent.MSceneManager.RootSceneNode.CreateChildSceneNode(agent.Node.Position);
                 temp.AttachObject(agent.Nodecube.DetachObject((ushort)0));
                 temp.Scale(Tools.CUBE_SCALE);
-
+                BuildingSimulation.cubeList.Add(temp);
 
             }
         }

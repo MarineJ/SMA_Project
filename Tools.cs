@@ -40,6 +40,11 @@ namespace SMA_Project_V1
     internal  const int MANAGER_SYMPATHY_INITIAL = 50;
 
     static internal Vector3 CUBE_SCALE = new Vector3(0.5f, 0.01f, 0.5f);
+    internal const int TIME_COOLDOWN = 300;
+
+    internal const int RAYON_COLLISION = 30;
+    internal const int RAYON_SCENE_EXT = 1500;
+    internal const int RAYON_SCENE_INT = 400;
 
 
     internal const string BUILDER_MESH = "robot.mesh";
